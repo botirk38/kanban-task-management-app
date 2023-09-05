@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, FC, useState } from 'react';
+import React, { createContext, FC, useState, useEffect } from 'react';
 
 type ThemeContextType = {
     theme: string;
@@ -18,6 +18,14 @@ type ThemeProviderProps = {
 
 const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     const [theme, setTheme] = useState('light'); // Create the state here
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [theme]);
 
     return(
         <ThemeContext.Provider value={{ theme, setTheme }}>

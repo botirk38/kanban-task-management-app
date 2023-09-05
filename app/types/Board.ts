@@ -8,14 +8,14 @@ interface Column {
     tasks: Task[];
 }
 
-interface Task {
+export interface Task {
     title: string;
     description: string;
     status: string;
     subtasks: Subtask[];
 }
 
-interface Subtask {
+export interface Subtask {
     title: string;
     isCompleted: boolean;
 }
