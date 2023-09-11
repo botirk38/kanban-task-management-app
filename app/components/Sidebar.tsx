@@ -13,14 +13,13 @@ interface SidebarProps {
   }
 
 const Sidebar: React.FC<SidebarProps> = ({boards}) => {
-    console.log(boards)
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
     const {theme} = useContext(ThemeContext);
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
+    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.tasks.map(task => task.status)) || []));
 
-    console.log("Theme:", theme);
 
     useEffect(() => {
         setIsMobile(window.innerWidth <= 768);
@@ -117,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = ({boards}) => {
             </div>
 
             {AddNewTaskOpen && (
-                <CreateTask onClose={handleAddNewTaskClick}/>
+                <CreateTask onClose={handleAddNewTaskClick} statuses={statuses}/>
             )
                 }
 

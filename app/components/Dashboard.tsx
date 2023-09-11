@@ -134,7 +134,7 @@ const Dashboard = () => {
                     onClose={() => setTaskOpen(false)}
                 /> }
 
-                <section className='grid place-items-start grid-cols-3  p-4 w-[73rem] min-h-screen  bg-blue-pale dark:bg-blue-dark md:w-full'>
+                <section className=' relative grid place-items-start grid-cols-3 grid-rows-auto  p-4 w-[73rem] min-h-screen  bg-blue-pale dark:bg-blue-dark md:w-full'>
                     {currentBoardWithIcons.columns && currentBoardWithIcons.columns.map((column, index) => (
                         <div key={index} className='flex flex-col justify-center items-start gap-4 w-full'>
                             <span className='flex'>
