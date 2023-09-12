@@ -20,7 +20,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
 
     return (
         <div className="fixed min-h-screen  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 " onClick={onClose}>
-            <div className=" dark:bg-blue-mid bg-white rounded h-full p-8 max-h-[30rem] w-[23rem]" onClick={(e) => e.stopPropagation()}>
+            <div className=" dark:bg-blue-mid bg-white rounded h-full p-8 overflow-y-auto max-h-[30rem] w-[23rem]" onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-center mb-4 '>
                     <h2 className='font-bold text-lg dark:text-white'>{title}</h2>
                     <picture>

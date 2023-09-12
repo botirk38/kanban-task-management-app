@@ -108,27 +108,27 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
     return(
         <section className="fixed min-h-screen  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 " onClick={onClose}>
 
-            <div className=" dark:bg-blue-mid bg-white rounded h-[37rem] max-h-full p-8  w-[23rem]" onClick={(e) => e.stopPropagation()}>
-                <h2 className="font-bold text-lg mb-4">Add new Task</h2>
+            <div className=" dark:bg-blue-mid bg-white rounded max-h-[calc(100vh-2rem)] overflow-y-auto  p-8  w-[23rem]" onClick={(e) => e.stopPropagation()}>
+                <h2 className="dark:text-white font-bold text-lg mb-4">Add new Task</h2>
 
                 <div className="flex flex-col justify-center items-start gap-6 mb-4">
 
                     <div className="flex flex-col justify-center items-start w-full gap-2">
-                        <p className="font-bold text-sm text-blue-grayish">Title</p>
-                        <input value={state.title} onChange = { e => dispatch({type:"SET_TITLE", payload: e.target.value})} className="p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm" type="text" placeholder="e.g. Take coffee break" />
+                        <p className=" dark:text-white font-bold text-sm text-blue-grayish">Title</p>
+                        <input value={state.title} onChange = { e => dispatch({type:"SET_TITLE", payload: e.target.value})} className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm" type="text" placeholder="e.g. Take coffee break" />
                     </div>
 
                     <div className="flex flex-col justify-center items-start w-full gap-2">
-                        <p className="font-bold text-sm text-blue-grayish">Description</p>
-                        <textarea value={state.description} onChange = { e => dispatch({type:"SET_DESCRIPTION", payload: e.target.value})}className="px-3 py-6  align-text-top text-start rounded-md border border-blue-grayish w-full placeholder:text-sm " placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little." />
+                        <p className="dark:text-white font-bold text-sm text-blue-grayish">Description</p>
+                        <textarea value={state.description} onChange = { e => dispatch({type:"SET_DESCRIPTION", payload: e.target.value})}className="dark:bg-blue-mid px-3 py-6  align-text-top text-start rounded-md border border-blue-grayish w-full placeholder:text-sm " placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little." />
                     </div>
                     
                     <div className="flex flex-col justify-center w-full items-start gap-4">
-                        <p className="font-bold text-sm text-blue-grayish ">Subtasks</p>
+                        <p className="dark:text-white font-bold text-sm text-blue-grayish ">Subtasks</p>
                         {state.subtasks.map((subtask, index) => (
                         <React.Fragment key={index}>
                             <div className="w-full flex justify-between items-center gap-4 ">
-                                <input value={subtask.title} onChange={e => dispatch({type:"UPDATE_SUBTASK", payload: {title: e.target.value, index: index}})}className="border border-blue-grayish p-2 rounded-sm w-full placeholder:text-sm" type="text" placeholder="e.g. Make coffee" />
+                                <input value={subtask.title} onChange={e => dispatch({type:"UPDATE_SUBTASK", payload: {title: e.target.value, index: index}})}className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-sm w-full placeholder:text-sm" type="text" placeholder="e.g. Make coffee" />
                                 <button onClick={ e => dispatch({type:"DELETE_SUBTASK", payload: index})}>
                                     <Image src="/assets/icon-cross.svg" alt="delete subtask" width={20} height={20} />
                                 </button>
@@ -137,15 +137,15 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
                         ))}
 
                         
-                        <ButtonAddTask  className=" bg-opacity-10 text-purple-dark " onClick={() => dispatch({type:"ADD_SUBTASK", payload: {title:"", isCompleted: false}}) }>
+                        <ButtonAddTask  className=" dark:bg-white bg-opacity-10 text-purple-dark " onClick={() => dispatch({type:"ADD_SUBTASK", payload: {title:"", isCompleted: false}}) }>
                             + Add new Subtask
                         </ButtonAddTask>
 
                     </div>
 
                     <div className="flex flex-col justify-center items-start w-full gap-2">
-                        <p className="font-bold text-sm text-blue-grayish">Status</p>
-                        <select value={state.status} onChange={e => dispatch({type:"SET_STATUS", payload:e.target.value})} className="border border-blue-grayish p-2 rounded-md w-full">
+                        <p className="dark:text-white font-bold text-sm text-blue-grayish">Status</p>
+                        <select value={state.status} onChange={e => dispatch({type:"SET_STATUS", payload:e.target.value})} className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-md w-full">
                             {statuses.map((status, index) => (
                                 <option key={index} value={status}>
                                     {status}
