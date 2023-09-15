@@ -3,7 +3,7 @@
 
 import {createContext} from 'react';
 import { useState, FC } from 'react';
-import { Board } from '../types/Board';
+import { Board } from '../../types/Board';
 
 
 type BoardContextType = {

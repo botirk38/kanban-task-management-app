@@ -2,11 +2,11 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
-import {ButtonPrimary} from './ButtonPrimary';
+import {ButtonPrimary} from './buttons/ButtonPrimary';
 import {Board } from '../types/Board';
-import ThemeToggle from './ThemeToggle';
-import { ThemeContext } from './FormContext';
-import { BoardContext } from './BoardContext';
+import ThemeToggle from './buttons/ThemeToggle';
+import { ThemeContext } from './context/FormContext';
+import { BoardContext } from './context/BoardContext';
 import CreateTask from './CreateTask';
 interface SidebarProps {
     boards: Board[];

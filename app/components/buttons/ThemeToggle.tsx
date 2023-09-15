@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ThemeContext } from './FormContext';
+import { ThemeContext } from '../context/FormContext';
 
 const ThemeToggle = () => {
     const {theme, setTheme} = useContext(ThemeContext);

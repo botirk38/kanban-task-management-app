@@ -1,4 +1,4 @@
-import { ButtonProps } from "../types/Button";
+import { ButtonProps } from "../../types/Button";
 
 
 export const ButtonAddTask: React.FC<ButtonProps> = ({

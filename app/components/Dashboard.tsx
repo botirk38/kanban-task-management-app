@@ -1,9 +1,9 @@
 "use client";
 
 import { useContext } from 'react';
-import { BoardContext } from "./BoardContext";
+import { BoardContext } from "./context/BoardContext";
 import Image from 'next/image';
-import { ButtonPrimary } from "./ButtonPrimary";
+import { ButtonPrimary } from "./buttons/ButtonPrimary";
 import { useState } from "react";
 import {Task} from "../types/Board";
 import TaskDetails from './TaskDetails';

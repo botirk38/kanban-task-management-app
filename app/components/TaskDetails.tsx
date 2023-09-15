@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subtask } from "../types/Board";
 import Image from 'next/image';
+import EditTask from './EditTask';
 
 
 interface TaskDetailsProps {
@@ -16,7 +17,21 @@ interface TaskDetailsProps {
 }
 
 const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks, status, statuses, onStatusChange, toggleSubtaskCompleted, onClose }) => {
+    const task = {
+        title: title,
+        description: description,
+        subtasks: subtasks,
+        status: status,
+    }
+    console.log(statuses);
 
+    const [editTaskOpen, setEditTaskOpen] = React.useState(false);
+    console.log(onStatusChange);
+
+    const handleEditTaskClick = () => {
+        setEditTaskOpen(prevState => !prevState);
+        console.log("Edit Task Clicked", editTaskOpen);
+    }
 
     return (
         <div className="fixed min-h-screen  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 " onClick={onClose}>
@@ -24,7 +39,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
                 <div className='flex justify-between items-center mb-4 '>
                     <h2 className='font-bold text-lg dark:text-white'>{title}</h2>
                     <picture>
-                        <Image src="/assets/icon-vertical-ellipsis.svg" alt="Edit Icon" width={5} height={5} />
+                        <Image src="/assets/icon-vertical-ellipsis.svg" alt="Edit Icon" width={5} height={5} onClick={() => handleEditTaskClick()} />
                     </picture>
                 </div>
                 <p className='text-blue-gray-light mb-4 dark:text-blue-grayish '>{description}</p>
@@ -50,6 +65,9 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
                     ))}
                 </select>
             </div>
+
+            {editTaskOpen && <EditTask onClose={handleEditTaskClick} task={task} statuses={statuses} onStatusChange={onStatusChange} />
+            }
         </div>
     );
 };

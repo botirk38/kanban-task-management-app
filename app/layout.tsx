@@ -1,10 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import ThemeProvider from "../app/components/FormContext";
+import ThemeProvider from "./components/context/FormContext";
 import Sidebar from "../app/components/Sidebar";
 import boardsData from "./data.json";
-import { BoardProvider } from './components/BoardContext';
+import { BoardProvider } from './components/context/BoardContext';
 
 
 const inter = Inter({ subsets: ['latin'] })
