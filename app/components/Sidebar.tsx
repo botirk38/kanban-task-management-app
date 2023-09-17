@@ -5,9 +5,9 @@ import Image from 'next/image';
 import {ButtonPrimary} from './buttons/ButtonPrimary';
 import {Board } from '../types/Board';
 import ThemeToggle from './buttons/ThemeToggle';
-import { ThemeContext } from './context/FormContext';
 import { BoardContext } from './context/BoardContext';
-import CreateTask from './CreateTask';
+import CreateTask from './createComponents/CreateTask'
+import CreateBoard from './createComponents/CreateBoard';
 interface SidebarProps {
     boards: Board[];
   }
@@ -16,9 +16,9 @@ const Sidebar: React.FC<SidebarProps> = ({boards}) => {
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
-    const {theme} = useContext(ThemeContext);
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.tasks.map(task => task.status)) || []));
+    const [createNewBoardOpen, setCreateNewBoardOpen] = useState(false); 
 
 
     useEffect(() => {
@@ -41,6 +41,10 @@ const Sidebar: React.FC<SidebarProps> = ({boards}) => {
     const handleAddNewTaskClick = () => {
         setAddNewTaskOpen(prevState => !prevState);
         console.log("Add New Task Clicked", AddNewTaskOpen);
+    }
+
+    const handleCreateNewBoardClick = () => {
+        setCreateNewBoardOpen(prevState => !prevState);
     }
 
     
@@ -76,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({boards}) => {
                         <li className='w-100 p-3 mb-2 font-bold '>
                             <button className='flex justify-center items-center gap-3' >
                                 <Image src="/assets/icon-board.svg" alt="Board Icon" width={20} height={20}/>
-                                <p className='text-purple-dark' >+ Create new Board</p>
+                                <a onClick={handleCreateNewBoardClick} className='text-purple-dark' >+ Create new Board</a>
                             </button>
                         </li>
 
@@ -119,6 +123,11 @@ const Sidebar: React.FC<SidebarProps> = ({boards}) => {
                 <CreateTask onClose={handleAddNewTaskClick} statuses={statuses}/>
             )
                 }
+            {createNewBoardOpen && (
+                <CreateBoard onClose={handleCreateNewBoardClick}/>
+            )
+                }
+
 
 
         </header>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useContext } from 'react';
+import { useContext, useMemo, useCallback } from 'react';
 import { BoardContext } from "./context/BoardContext";
 import Image from 'next/image';
 import { ButtonPrimary } from "./buttons/ButtonPrimary";
 import { useState } from "react";
 import {Task} from "../types/Board";
-import TaskDetails from './TaskDetails';
+import TaskDetails from './createComponents/TaskDetails';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -19,40 +19,43 @@ const Dashboard = () => {
 
 
 
-    const todoIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#49c4e5",}} />;
-    const doingIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#8471f2",}} />;
-    const doneIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#6ee7b7",}} />;
+      const currentBoardWithIcons = useMemo(() => {
 
-    const columnIcons = [
-        { name: 'To Do', icon: todoIcon },
-        { name: 'Doing', icon: doingIcon },
-        { name: 'Done', icon: doneIcon }
-      ];
+        const todoIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#49c4e5",}} />;
+        const doingIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#8471f2",}} />;
+        const doneIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#6ee7b7",}} />;
 
-    const currentBoardWithIcons = {
-        ...currentBoard,
-        columns: currentBoard?.columns.map(column => {
-          const icon = columnIcons.find(columnIcon => columnIcon.name === column.name)?.icon ?? null;
-          return {
-            ...column,
-            status: {
-              name: column.name,
-              icon: icon
-            }
-          };
-        })
-      };
+        const columnIcons = [
+            { name: 'To Do', icon: todoIcon },
+            { name: 'Doing', icon: doingIcon },
+            { name: 'Done', icon: doneIcon }
+        ];
+       
+        return {
+          ...currentBoard,
+          columns: currentBoard?.columns.map(column => {
+            const icon = columnIcons.find(columnIcon => columnIcon.name === column.name)?.icon ?? null;
+            return {
+              ...column,
+              status: {
+                name: column.name,
+                icon: icon
+              }
+            };
+          })
+        };
+      }, [currentBoard]);
 
             
 
-    const openTask = (task: Task) => {
+    const openTask = useCallback((task: Task) => {
         setSelectedTask(task);
         setTaskOpen(true);
-    };
+    }, []);
 
 
 
-    const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         if (currentBoard && selectedTask) {
             const updatedSelectedTask = { ...selectedTask, status: event.target.value };
     
@@ -61,10 +64,8 @@ const Dashboard = () => {
             if (oldColumnIndex !== -1) {
                 const updatedBoard = { ...currentBoard };
     
-                // Remove task from old column
                 updatedBoard.columns[oldColumnIndex].tasks = updatedBoard.columns[oldColumnIndex].tasks.filter(task => task !== selectedTask);
     
-                // Find the column for the new status
                 const newColumnIndex = currentBoard.columns.findIndex(column => column.name === updatedSelectedTask.status);
                 
                 if (newColumnIndex !== -1) {
@@ -83,10 +84,10 @@ const Dashboard = () => {
         } else {
             console.error("No task selected or no current board.");
         }
-    };
+    },[currentBoard, selectedTask, setCurrentBoard]);
     
 
-    const toggleSubtaskCompleted = (subtaskIndex: number) => {
+    const toggleSubtaskCompleted = useCallback((subtaskIndex: number) => {
         if (currentBoard && selectedTask && selectedTask.subtasks[subtaskIndex]) {
           const updatedSelectedTask = { ...selectedTask, subtasks: [...selectedTask.subtasks] };
       
@@ -107,7 +108,7 @@ const Dashboard = () => {
         } else {
           console.error("Invalid subtask index provided or no task selected.");
         }
-      };
+      }, [currentBoard, selectedTask, setCurrentBoard]);
 
      
       

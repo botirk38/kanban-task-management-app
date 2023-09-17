@@ -1,7 +1,7 @@
 import React from "react";
-import { ButtonAddTask } from "./buttons/ButtonAddTask";
+import { ButtonAddTask } from "../buttons/ButtonAddTask";
 import Image from "next/image";
-import { Action, State } from "./CreateTask";
+import { Action, State } from "../createComponents/CreateTask";
 
 interface TaskFormProps {
     state: State;

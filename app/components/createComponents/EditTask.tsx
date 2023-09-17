@@ -1,9 +1,9 @@
 import React from 'react';
-import { Task, } from '../types/Board';
-import TaskForm from './TaskForm';
+import { Task, } from '../../types/Board';
+import TaskForm from '../forms/TaskForm';
 import { reducer } from './CreateTask';
 import { useContext } from 'react';
-import { BoardContext } from './context/BoardContext';
+import { BoardContext } from '../context/BoardContext';
 
 
 interface EditTaskProps {

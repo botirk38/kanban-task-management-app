@@ -1,7 +1,8 @@
 import React from 'react';
-import { Subtask } from "../types/Board";
+import { Subtask } from "../../types/Board";
 import Image from 'next/image';
 import EditTask from './EditTask';
+import { useCallback } from 'react';
 
 
 interface TaskDetailsProps {
@@ -28,10 +29,10 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
     const [editTaskOpen, setEditTaskOpen] = React.useState(false);
     console.log(onStatusChange);
 
-    const handleEditTaskClick = () => {
+    const handleEditTaskClick = useCallback(() => {
         setEditTaskOpen(prevState => !prevState);
         console.log("Edit Task Clicked", editTaskOpen);
-    }
+    }, [ editTaskOpen ])
 
     return (
         <div className="fixed min-h-screen  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 " onClick={onClose}>

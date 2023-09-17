@@ -1,8 +1,8 @@
 import React from "react";
 import { useContext } from "react";
-import { BoardContext } from "./context/BoardContext";
-import { Subtask, Task } from "../types/Board";
-import TaskForm from "./TaskForm";
+import { BoardContext } from "../context/BoardContext";
+import { Subtask, Task } from "../../types/Board";
+import TaskForm from "../forms/TaskForm";
 
 interface CreateTaskProps {
     onClose: () => void;
