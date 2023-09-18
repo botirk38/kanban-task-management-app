@@ -2,7 +2,7 @@ import React from 'react';
 import { Task, } from '../../types/Board';
 import TaskForm from '../forms/TaskForm';
 import { reducer } from './CreateTask';
-import { useContext } from 'react';
+import { useContext, useMemo, useCallback } from 'react';
 import { BoardContext } from '../context/BoardContext';
 
 
@@ -17,41 +17,48 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, statuses, onStatusCh
     const [state, dispatch] = React.useReducer(reducer, task);
     const { currentBoard, setCurrentBoard } = useContext(BoardContext);
 
-    const editTask = (updatedTask: Task) => {
-        if (currentBoard) {
-            const updatedBoard = { ...currentBoard };
-            
-            // Find the column index where the task currently resides
-            console.log(updatedBoard.columns)
-            const currentColumnIndex = updatedBoard.columns.findIndex(column =>
-                column.tasks.findIndex(t => t.title === task.title) !== -1
-            );
-            console.log(currentColumnIndex);
-            
-            // Find the task index within that column
-            if(currentColumnIndex === -1) return;
-            const currentTaskIndex = updatedBoard.columns[currentColumnIndex].tasks.findIndex(t => t.title === task.title);
-            console.log(updatedBoard.columns[currentColumnIndex].tasks[currentTaskIndex]);
-    
-            // If the task's status has changed, move it to the appropriate column
-            if (task.status !== updatedTask.status) {
-                // Remove the task from its current position
-                updatedBoard.columns[currentColumnIndex].tasks.splice(currentTaskIndex, 1);
-    
-                // Find the column index where the task should be placed after the update
-                const targetColumnIndex = updatedBoard.columns.findIndex(column => column.name === updatedTask.status);
-    
-                // Add the updated task to its new position
-                updatedBoard.columns[targetColumnIndex].tasks.push(updatedTask);
-            } else {
-                // If the status hasn't changed, just update the task in its current position
-                updatedBoard.columns[currentColumnIndex].tasks[currentTaskIndex] = updatedTask;
-            }
-            
-            setCurrentBoard(updatedBoard);
-            onClose();
+    const currentColumnIndex = useMemo(() => {
+        if (!currentBoard) {
+          return -1;
         }
-    }
+      
+        return currentBoard.columns.findIndex(column =>
+          column.tasks.findIndex(t => t.title === task.title) !== -1
+        );
+      }, [currentBoard, task]);
+      
+      const currentTaskIndex = useMemo(() => {
+        if (currentColumnIndex === -1) {
+          return -1;
+        }
+      
+        return currentBoard?.columns[currentColumnIndex].tasks.findIndex(t => t.title === task.title);
+      }, [currentBoard, currentColumnIndex, task]);
+
+
+      const editTask = useCallback((updatedTask: Task) => {
+        if (currentBoard && currentColumnIndex !== -1 && currentTaskIndex !== -1) {
+          const updatedBoard = { ...currentBoard };
+      
+          // If the task's status has changed, move it to the appropriate column
+          if (task.status !== updatedTask.status) {
+            // Remove the task from its current position
+            updatedBoard.columns[currentColumnIndex].tasks.splice(currentTaskIndex ?? - 1, 1, updatedTask);
+      
+            // Find the column index where the task should be placed after the update
+            const newColumnIndex = updatedBoard.columns.findIndex(column => column.name === updatedTask.status);
+      
+            // Add the task to the new column
+            updatedBoard.columns[newColumnIndex].tasks.push(updatedTask);
+          } else {
+            // Update the task in its current position
+            updatedBoard.columns[currentColumnIndex].tasks[currentTaskIndex ?? - 1] = updatedTask;
+          }
+      
+          setCurrentBoard(updatedBoard);
+          onClose();
+        }
+      }, [currentBoard, currentColumnIndex, currentTaskIndex, task, setCurrentBoard, onClose]);
     
     
 
