@@ -11,7 +11,7 @@ type BoardContextType = {
     setCurrentBoard: React.Dispatch<React.SetStateAction<Board | null>>;
   };
   
-  export const BoardContext = createContext<BoardContextType>({
+export const BoardContext = createContext<BoardContextType>({
     currentBoard: null,
     setCurrentBoard: () => { throw new Error("setCurrentBoard function must be overridden"); },
   });
