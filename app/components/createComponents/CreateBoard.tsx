@@ -23,7 +23,7 @@ const initialState: BoardState = {
     boardColumns: []
 };
 
-const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
+export const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
     switch (action.type) {
         case "SET_BOARD_NAME":
             return { ...state, boardName: action.payload };

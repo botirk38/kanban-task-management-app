@@ -3,9 +3,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {ButtonPrimary} from './buttons/ButtonPrimary';
-import {Board } from '../types/Board';
 import ThemeToggle from './buttons/ThemeToggle';
-
+import EditBoard from './createComponents/EditBoard';
 import { BoardContext } from './context/BoardContext';
 import { BoardsContext } from './context/BoardsContext';
 
@@ -16,14 +15,17 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = () => {
     const [isMobile, setIsMobile] = useState(false);
+
     const [menuOpen, setMenuOpen] = useState(false);
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
+    const [createNewBoardOpen, setCreateNewBoardOpen] = useState(false);
+    const [editBoardOpen, setEditBoardOpen] = useState(false);
+
+
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
     const {boards, setBoards} = useContext(BoardsContext);
-    console.log(currentBoard);
+
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
-    console.log(statuses);
-    const [createNewBoardOpen, setCreateNewBoardOpen] = useState(false); 
 
 
     useEffect(() => {
@@ -50,6 +52,10 @@ const Sidebar: React.FC<SidebarProps> = () => {
 
     const handleCreateNewBoardClick = () => {
         setCreateNewBoardOpen(prevState => !prevState);
+    }
+
+    const handleEditBoardClick = () => {
+        setEditBoardOpen(prevState => !prevState);
     }
 
     
@@ -110,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
                     <Image src="/assets/icon-add-task-mobile.svg" className='m-0 object-cover w-full p-1' width={10} height={10} alt="Add a task"/>
                 </ButtonPrimary>
 
-                <ButtonPrimary className='bg-transparent'><Image src="/assets/icon-vertical-ellipsis.svg" className='m-0 object-cover w-full  ' width={10} height={10} alt="More Info"/></ButtonPrimary>
+                <ButtonPrimary onClick={handleEditBoardClick} className='bg-transparent'><Image src="/assets/icon-vertical-ellipsis.svg" className='m-0 object-cover w-full  ' width={10} height={10} alt="More Info" /></ButtonPrimary>
             </div>
 
             
@@ -130,6 +136,11 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 }
             {createNewBoardOpen && (
                 <CreateBoard onClose={handleCreateNewBoardClick}/>
+            )
+                }
+
+            {editBoardOpen && (
+                <EditBoard onClose={handleEditBoardClick}/>
             )
                 }
 
