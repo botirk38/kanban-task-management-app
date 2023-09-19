@@ -26,9 +26,9 @@ const Dashboard = () => {
         const doneIcon = <FontAwesomeIcon icon={faCircle} style={{color: "#6ee7b7",}} />;
 
         const columnIcons = [
-            { name: 'To Do', icon: todoIcon },
-            { name: 'Doing', icon: doingIcon },
-            { name: 'Done', icon: doneIcon }
+            { name: statuses[0], icon: todoIcon },
+            { name: statuses[1], icon: doingIcon },
+            { name: statuses[2], icon: doneIcon }
         ];
        
         return {
@@ -44,7 +44,7 @@ const Dashboard = () => {
             };
           })
         };
-      }, [currentBoard]);
+      }, [currentBoard, statuses]);
 
             
 

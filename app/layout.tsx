@@ -5,6 +5,7 @@ import ThemeProvider from "./components/context/FormContext";
 import Sidebar from "../app/components/Sidebar";
 import boardsData from "./data.json";
 import { BoardProvider } from './components/context/BoardContext';
+import { BoardsProvider } from './components/context/BoardsContext';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -28,9 +29,10 @@ export default function RootLayout({
       <ThemeProvider>
         <body className={inter.className}>
         <BoardProvider>
-            <Sidebar boards={boardsData.boards} />
-
+          <BoardsProvider>
+            <Sidebar/>
             {children}
+          </BoardsProvider>
         </BoardProvider>
 
         </body>

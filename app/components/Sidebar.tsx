@@ -5,18 +5,21 @@ import Image from 'next/image';
 import {ButtonPrimary} from './buttons/ButtonPrimary';
 import {Board } from '../types/Board';
 import ThemeToggle from './buttons/ThemeToggle';
+
 import { BoardContext } from './context/BoardContext';
+import { BoardsContext } from './context/BoardsContext';
+
 import CreateTask from './createComponents/CreateTask'
 import CreateBoard from './createComponents/CreateBoard';
 interface SidebarProps {
-    boards: Board[];
-  }
+}
 
-const Sidebar: React.FC<SidebarProps> = ({boards}) => {
+const Sidebar: React.FC<SidebarProps> = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
+    const {boards, setBoards} = useContext(BoardsContext);
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.tasks.map(task => task.status)) || []));
     const [createNewBoardOpen, setCreateNewBoardOpen] = useState(false); 
 
