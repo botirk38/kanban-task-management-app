@@ -19,7 +19,7 @@ interface TaskDetailsProps {
 
 const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks, status, statuses, onStatusChange, toggleSubtaskCompleted, onClose }) => {
     
-
+    console.log("Statuses", statuses);
     const {currentBoard} = useContext(BoardContext);
     const [editTaskOpen, setEditTaskOpen] = React.useState(false);
 

@@ -75,7 +75,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
     const [state, dispatch] = React.useReducer(reducer, {
         title: '',
         description: '',
-        status: 'Todo',
+        status: statuses[0],
         subtasks: []
     });
 

@@ -20,7 +20,9 @@ const Sidebar: React.FC<SidebarProps> = () => {
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
     const {boards, setBoards} = useContext(BoardsContext);
-    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.tasks.map(task => task.status)) || []));
+    console.log(currentBoard);
+    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
+    console.log(statuses);
     const [createNewBoardOpen, setCreateNewBoardOpen] = useState(false); 
 
 

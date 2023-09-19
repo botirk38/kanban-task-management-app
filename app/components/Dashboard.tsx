@@ -15,7 +15,7 @@ const Dashboard = () => {
     const [taskOpen, setTaskOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
    
-    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.tasks.map(task => task.status)) || []));
+    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
 
 
 
