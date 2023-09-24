@@ -9,10 +9,11 @@ import { BoardContext } from '../context/BoardContext';
 interface NavigationProps {
     menuOpen: boolean;
     handleMenuToggle: () => void;
+    handleCreateNewBoardClick: () => void;
 }
 
 
-const Navigation: React.FC<NavigationProps> = ({menuOpen, handleMenuToggle }) =>{
+const Navigation: React.FC<NavigationProps> = ({menuOpen, handleMenuToggle, handleCreateNewBoardClick }) =>{
 
     const {boards, setBoards} = useContext(BoardsContext);
     const {setCurrentBoard} = useContext(BoardContext);
@@ -34,7 +35,7 @@ const Navigation: React.FC<NavigationProps> = ({menuOpen, handleMenuToggle }) =>
             <li className='w-100 p-3 mb-2 font-bold'>
                 <button className='flex justify-center items-center gap-3' onClick={handleMenuToggle}>
                     <Image src="/assets/icon-board.svg" alt="Board Icon" width={20} height={20} />
-                    <span className='text-purple-dark'>+ Create new Board</span>
+                    <a onClick={handleCreateNewBoardClick} className='text-purple-dark'>+ Create new Board</a>
                 </button>
             </li>
         </ul>

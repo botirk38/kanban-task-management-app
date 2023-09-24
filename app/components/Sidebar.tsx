@@ -14,6 +14,7 @@ import CreateBoard from './board/CreateBoard';
 import Logo from './sidebar/Logo';
 import Navigation from './sidebar/Navigation';
 import BoardHeader from './sidebar/BoardHeader';
+import ModalMenu from './menus/ModalMenu';
 
 interface SidebarProps {
 }
@@ -24,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
     const [createNewBoardOpen, setCreateNewBoardOpen] = useState(false);
-    const [editBoardOpen, setEditBoardOpen] = useState(false);
+    const [modalMenuOpen, setModalMenuOpen] = useState(false);
 
 
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
@@ -59,9 +60,17 @@ const Sidebar: React.FC<SidebarProps> = () => {
         setCreateNewBoardOpen(prevState => !prevState);
     }
 
-    const handleEditBoardClick = () => {
-        setEditBoardOpen(prevState => !prevState);
+    const handleModalMenuClick = () => {
+        setModalMenuOpen(prevState => !prevState);
     }
+
+    useEffect(() => {
+        console.log("Modal Menu Open", modalMenuOpen);
+        console.log("Create New Board Open", createNewBoardOpen);
+    }, [modalMenuOpen, createNewBoardOpen])
+
+
+
 
     const handleMenuToggle = () => setMenuOpen(prev => !prev);
 
@@ -72,23 +81,15 @@ const Sidebar: React.FC<SidebarProps> = () => {
     return(
         <header className="container flex gap-3 justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
             <Logo isMobile={isMobile}/>
-            <Navigation menuOpen={menuOpen} handleMenuToggle={handleMenuToggle}/>
-            {currentBoard ? <BoardHeader currentBoard={currentBoard} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/> : null}
+            <Navigation menuOpen={menuOpen} handleMenuToggle={handleMenuToggle} handleCreateNewBoardClick={handleCreateNewBoardClick}/>
+            { currentBoard? <BoardHeader currentBoard={currentBoard} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/> : <BoardHeader currentBoard={boards[0]} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/>}
 
             <div className='flex justify-center items-center '>
                 <ButtonPrimary className='container w-[4rem]  justify-center items-center m-0' onClick={handleAddNewTaskClick} >
                     <Image src="/assets/icon-add-task-mobile.svg" className='m-0 object-cover w-full p-1' width={10} height={10} alt="Add a task"/>
                 </ButtonPrimary>
-
-                <ButtonPrimary onClick={handleEditBoardClick} className='bg-transparent'><Image src="/assets/icon-vertical-ellipsis.svg" className='m-0 object-cover w-full  ' width={10} height={10} alt="More Info" /></ButtonPrimary>
+                <ButtonPrimary onClick={handleModalMenuClick} className='bg-transparent'><Image src="/assets/icon-vertical-ellipsis.svg" className='m-0 object-cover w-full  ' width={10} height={10} alt="More Info" /></ButtonPrimary>
             </div>
-
-            
-
-
-            
-
-          
 
             <div className='hidden'>
                 <Image src="/assets/icon-hide-sidebar.svg" alt="Hide Sidebar" width={25} height={25}/>
@@ -98,15 +99,16 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 <CreateTask onClose={handleAddNewTaskClick} statuses={statuses}/>
             )
                 }
+
+            {modalMenuOpen && 
+                <ModalMenu actionType='Board'/>
+            }
             {createNewBoardOpen && (
                 <CreateBoard onClose={handleCreateNewBoardClick}/>
             )
                 }
 
-            {editBoardOpen && (
-                <EditBoard onClose={handleEditBoardClick}/>
-            )
-                }
+            
 
 
 
