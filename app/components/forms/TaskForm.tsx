@@ -1,7 +1,7 @@
 import React from "react";
 import { ButtonAddTask } from "../buttons/ButtonAddTask";
 import Image from "next/image";
-import { Action, State } from "../createComponents/CreateTask";
+import { Action, State } from "../task/CreateTask";
 
 interface TaskFormProps {
     state: State;
@@ -12,7 +12,7 @@ interface TaskFormProps {
     onStatusChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses, onSubmit, title }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onSubmit, title }) => {
     return (
       <div className="flex flex-col dark:bg-blue-mid bg-white gap-4 rounded max-h-[calc(100vh-2rem)] overflow-y-auto p-8 w-[23rem]" onClick={e => e.stopPropagation()}>
         {/* Title Input */}

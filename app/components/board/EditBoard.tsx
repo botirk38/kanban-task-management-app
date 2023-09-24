@@ -1,5 +1,5 @@
 import BoardForm from "../forms/BoardForm";
-import { boardReducer } from "../createComponents/CreateBoard";
+import { boardReducer } from "./CreateBoard";
 import React, { useContext, useReducer, useState } from "react";
 import { BoardContext } from "../context/BoardContext";
 
@@ -41,7 +41,7 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
 
     return (
         <section className="fixed min-h-screen inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
-            <BoardForm title="Edit Board" state={state} dispatch={dispatch} onSubmit={handleSubmit} />
+            <BoardForm title="Edit Board" state={state} dispatch={dispatch} onSubmit={handleSubmit} action={"Save Changes"} />
         </section>
     )
 

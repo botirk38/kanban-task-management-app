@@ -1,6 +1,6 @@
 import { ButtonAddTask } from "../buttons/ButtonAddTask";
 import { ButtonPrimary } from "../buttons/ButtonPrimary";
-import { BoardAction, BoardState } from "../createComponents/CreateBoard";
+import { BoardAction, BoardState } from "../board/CreateBoard";
 import React, { useState } from "react";
 
 interface BoardFormProps {
@@ -8,12 +8,13 @@ interface BoardFormProps {
     title: string;
     dispatch: React.Dispatch<BoardAction>;
     onSubmit: (event: React.FormEvent<HTMLButtonElement>) => void;
+    action: string;
 
 
 }
 
 
-const BoardForm: React.FC<BoardFormProps> = ({ title, state, dispatch, onSubmit }) => {
+const BoardForm: React.FC<BoardFormProps> = ({ title, state, dispatch, onSubmit, action }) => {
     const [newColumn, setNewColumn] = useState("");  // Temporary state for column name
 
     const handleAddColumn = () => {
@@ -51,7 +52,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ title, state, dispatch, onSubmit 
 
             <div className="flex flex-col justify-center items-center w-full">
                 <ButtonPrimary className="w-full" onClick={onSubmit}> 
-                    Create New Board
+                    {action}
                 </ButtonPrimary>
             </div>
         </div>

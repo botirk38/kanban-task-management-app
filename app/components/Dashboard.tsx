@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { ButtonPrimary } from "./buttons/ButtonPrimary";
 import { useState } from "react";
 import {Task} from "../types/Board";
-import TaskDetails from './createComponents/TaskDetails';
+import TaskDetails from './task/TaskDetails';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -128,9 +128,6 @@ const Dashboard = () => {
 
                 {taskOpen && selectedTask && <TaskDetails 
                     title={selectedTask.title} 
-                    description={selectedTask.description} 
-                    subtasks={selectedTask.subtasks} 
-                    status={selectedTask.status}
                     statuses={statuses}
                     onStatusChange={handleStatusChange}
                     toggleSubtaskCompleted={toggleSubtaskCompleted}

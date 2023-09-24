@@ -68,6 +68,7 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
                 state={state}
                 dispatch={dispatch}
                 onSubmit={handleSubmit}
+                action={"Create New Board"}
             />
         </section>
     )

@@ -4,12 +4,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {ButtonPrimary} from './buttons/ButtonPrimary';
 import ThemeToggle from './buttons/ThemeToggle';
-import EditBoard from './createComponents/EditBoard';
+import EditBoard from './board/EditBoard';
 import { BoardContext } from './context/BoardContext';
 import { BoardsContext } from './context/BoardsContext';
 
-import CreateTask from './createComponents/CreateTask'
-import CreateBoard from './createComponents/CreateBoard';
+import CreateTask from './task/CreateTask'
+import CreateBoard from './board/CreateBoard';
 interface SidebarProps {
 }
 

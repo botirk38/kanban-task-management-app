@@ -1,27 +1,23 @@
 import React from 'react';
-import { Subtask } from "../../types/Board";
 import Image from 'next/image';
-import EditTask from './EditTask';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { BoardContext } from '../context/BoardContext';
+import ModalMenu from '../menus/ModalMenu';
 
 interface TaskDetailsProps {
     
     title: string;
-    description: string;
-    subtasks: Subtask[];
-    status: string;
     statuses: string[];
     onStatusChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     toggleSubtaskCompleted: (index: number) => void;
     onClose: () => void;
 }
 
-const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks, status, statuses, onStatusChange, toggleSubtaskCompleted, onClose }) => {
+const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChange, toggleSubtaskCompleted, onClose }) => {
     
-    console.log("Statuses", statuses);
     const {currentBoard} = useContext(BoardContext);
-    const [editTaskOpen, setEditTaskOpen] = React.useState(false);
+    const [modalMenuOpen, setModalMenuOpen] = useState(false);
+    
 
     const taskFromContext = useMemo(() => {
         for (const column of currentBoard?.columns || []) {
@@ -30,14 +26,14 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
         }
         return null;
     }, [currentBoard, title]);
+
+    const handleModalMenuClick = useCallback(() => {
+        setModalMenuOpen(prevState => !prevState);
+    }, []);
     
     
 
-    const handleEditTaskClick = useCallback(() => {
-        setEditTaskOpen(prevState => !prevState);
-        console.log("Edit Task Clicked", editTaskOpen);
-        
-    }, [ editTaskOpen ])
+   
 
     return (
         <div className="fixed min-h-screen  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 " onClick={onClose}>
@@ -45,7 +41,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
                 <div className='flex justify-between items-center mb-4 '>
                     <h2 className='font-bold text-lg dark:text-white'>{taskFromContext?.title}</h2>
                     <picture>
-                        <Image src="/assets/icon-vertical-ellipsis.svg" alt="Edit Icon" width={5} height={5} onClick={() => handleEditTaskClick()} />
+                        <Image src="/assets/icon-vertical-ellipsis.svg" alt="Edit Icon" width={5} height={5} onClick={handleModalMenuClick}  />
                     </picture>
                 </div>
                 <p className='text-blue-gray-light mb-4 dark:text-blue-grayish '>{taskFromContext?.description}</p>
@@ -72,8 +68,15 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, description, subtasks,
                 </select>
             </div>
 
-            {editTaskOpen && taskFromContext && <EditTask onClose={handleEditTaskClick} task={{title: taskFromContext.title, description: taskFromContext.description, subtasks: taskFromContext.subtasks, status: taskFromContext.status}} statuses={statuses} onStatusChange={onStatusChange} />
-            }
+            {modalMenuOpen && taskFromContext && 
+            <ModalMenu 
+            onClose={onClose}  
+            task={{title:taskFromContext.title, description: taskFromContext.description, status:taskFromContext.status, subtasks: taskFromContext.subtasks}}  
+            onStatusChange={onStatusChange}
+            actionType = "Task"
+            />}
+
+            
         </div>
     );
 };

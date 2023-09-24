@@ -9,13 +9,14 @@ import { BoardContext } from '../context/BoardContext';
 interface EditTaskProps {
     onClose: () => void;
     task: Task;
-    statuses: string[];
     onStatusChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const EditTask: React.FC<EditTaskProps> = ({ onClose, task, statuses, onStatusChange}) => {
+const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => {
     const [state, dispatch] = React.useReducer(reducer, task);
     const { currentBoard, setCurrentBoard } = useContext(BoardContext);
+    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
+
 
     const currentColumnIndex = useMemo(() => {
         if (!currentBoard) {
