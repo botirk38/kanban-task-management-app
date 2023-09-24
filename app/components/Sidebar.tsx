@@ -2,14 +2,18 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
+
 import {ButtonPrimary} from './buttons/ButtonPrimary';
 import ThemeToggle from './buttons/ThemeToggle';
+
 import EditBoard from './board/EditBoard';
 import { BoardContext } from './context/BoardContext';
 import { BoardsContext } from './context/BoardsContext';
 
 import CreateTask from './task/CreateTask'
 import CreateBoard from './board/CreateBoard';
+import Logo from './sidebar/Logo';
+
 interface SidebarProps {
 }
 
@@ -62,15 +66,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
 
     return(
         <header className="container flex gap-3 justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
-            <picture>
-                <Image 
-                    src={isMobile ? "/assets/logo-mobile.svg" : "/assets/logo-dark.svg"} 
-                    width={imageWidth} 
-                    height={imageHeight} 
-                    alt="Logo" 
-                />
-            </picture>
-
+            <Logo isMobile={isMobile}/>
             <nav className={` bg-white dark:bg-blue-gray transition-transform duration-500 ease-in-out transform absolute z-50 top-20 left-[4rem] shadow-xl rounded-xl min-w-max max-w-xs min-h-max  container flex-col justify-center items-start ${menuOpen ? 'translate-y-0' : '-translate-y-[50rem]'}`}>
 
                 <h3 className='text-md p-3 tracking-widest font-bold uppercase text-blue-grayish mb-3'>
