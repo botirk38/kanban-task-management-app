@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import {ButtonPrimary} from './buttons/ButtonPrimary';
-import ThemeToggle from './buttons/ThemeToggle';
 
 import EditBoard from './board/EditBoard';
 import { BoardContext } from './context/BoardContext';
@@ -13,6 +12,8 @@ import { BoardsContext } from './context/BoardsContext';
 import CreateTask from './task/CreateTask'
 import CreateBoard from './board/CreateBoard';
 import Logo from './sidebar/Logo';
+import Navigation from './sidebar/Navigation';
+import BoardHeader from './sidebar/BoardHeader';
 
 interface SidebarProps {
 }
@@ -62,50 +63,17 @@ const Sidebar: React.FC<SidebarProps> = () => {
         setEditBoardOpen(prevState => !prevState);
     }
 
+    const handleMenuToggle = () => setMenuOpen(prev => !prev);
+
+    
+
     
 
     return(
         <header className="container flex gap-3 justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
             <Logo isMobile={isMobile}/>
-            <nav className={` bg-white dark:bg-blue-gray transition-transform duration-500 ease-in-out transform absolute z-50 top-20 left-[4rem] shadow-xl rounded-xl min-w-max max-w-xs min-h-max  container flex-col justify-center items-start ${menuOpen ? 'translate-y-0' : '-translate-y-[50rem]'}`}>
-
-                <h3 className='text-md p-3 tracking-widest font-bold uppercase text-blue-grayish mb-3'>
-                    All Boards ({boards?.length || 0})
-                </h3>
-
-                <ul className=' flex flex-col gap-3 justify-center items-start font-bold  '>
-                    {boards && boards.map((board, index )=> (
-                        <li key={index} className='w-full rounded-r-3xl hover:bg-purple-dark hover:text-white '>
-                            <button className='flex justify-center p-3 items-center gap-3'>
-                                <Image src="/assets/icon-board.svg" alt="Board Icon" width={20} height={20}/>
-                                <a className='text-blue-grayish hover:text-white' onClick={() => setCurrentBoard(board)}>{board.name}</a>
-                            </button>
-                        </li>
-
-                    ))}
-
-                        <li className='w-100 p-3 mb-2 font-bold '>
-                            <button className='flex justify-center items-center gap-3' >
-                                <Image src="/assets/icon-board.svg" alt="Board Icon" width={20} height={20}/>
-                                <a onClick={handleCreateNewBoardClick} className='text-purple-dark' >+ Create new Board</a>
-                            </button>
-                        </li>
-
-                </ul>
-
-                
-
-                <div className='dark:bg-blue-dark flex justify-center items-center gap-6 bg-blue-pale p-3 rounded-lg m-5'>
-                    <Image src="/assets/icon-light-theme.svg" alt="Light Theme" width={25} height={25}/>
-                    <ThemeToggle />
-                    <Image src="/assets/icon-dark-theme.svg" alt="Dark Theme" width={25} height={25}/>
-                </div>
-            </nav>
-
-            <div className='flex container justify-start items-center gap-2'>
-                <h2 className='text-xl font-bold'>{currentBoard?.name}</h2>
-                <button><Image src={`${!menuOpen ?"/assets/icon-chevron-down.svg": "/assets/icon-chevron-up.svg"}`} alt="Open Menu" width={15} height={15} onClick={ () => setMenuOpen(prevState => !prevState)} /> </button>
-            </div>
+            <Navigation menuOpen={menuOpen} handleMenuToggle={handleMenuToggle}/>
+            {currentBoard ? <BoardHeader currentBoard={currentBoard} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/> : null}
 
             <div className='flex justify-center items-center '>
                 <ButtonPrimary className='container w-[4rem]  justify-center items-center m-0' onClick={handleAddNewTaskClick} >

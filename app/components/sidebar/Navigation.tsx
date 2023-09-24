@@ -2,16 +2,21 @@ import React from 'react';
 import { Board } from '../../types/Board';
 import Image from 'next/image';
 import ThemeToggle from '../buttons/ThemeToggle';
+import { useContext } from 'react';
+import { BoardsContext } from '../context/BoardsContext';
+import { BoardContext } from '../context/BoardContext';
 
 interface NavigationProps {
     menuOpen: boolean;
-    boards: Board[];
-    setCurrentBoard: (board: Board) => void;
     handleMenuToggle: () => void;
 }
 
 
-const Navigation: React.FC<NavigationProps> = ({menuOpen, boards, setCurrentBoard, handleMenuToggle }) =>{
+const Navigation: React.FC<NavigationProps> = ({menuOpen, handleMenuToggle }) =>{
+
+    const {boards, setBoards} = useContext(BoardsContext);
+    const {setCurrentBoard} = useContext(BoardContext);
+
     return(
         <nav className={`bg-white dark:bg-blue-gray transition-transform duration-500 ease-in-out transform absolute z-50 top-20 left-[4rem] shadow-xl rounded-xl min-w-max max-w-xs min-h-max container flex-col justify-center items-start ${menuOpen ? 'translate-y-0' : '-translate-y-[50rem]'}`}>
         <h3 className='text-md p-3 tracking-widest font-bold uppercase text-blue-grayish mb-3'>
@@ -42,3 +47,5 @@ const Navigation: React.FC<NavigationProps> = ({menuOpen, boards, setCurrentBoar
     )
 
 }
+
+export default Navigation;
