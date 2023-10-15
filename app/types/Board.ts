@@ -3,9 +3,13 @@ export interface Board {
     columns: Column[];
 }
 
-interface Column {
+export interface Column {
     name: string;
     tasks: Task[];
+    status: {
+        name: string;
+        icon?: JSX.Element; 
+      };
 }
 
 export interface Task {

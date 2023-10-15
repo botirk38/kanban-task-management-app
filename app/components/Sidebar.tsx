@@ -1,11 +1,9 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Image from 'next/image';
 
-import {ButtonPrimary} from './buttons/ButtonPrimary';
 
-import EditBoard from './board/EditBoard';
 import { BoardContext } from './context/BoardContext';
 import { BoardsContext } from './context/BoardsContext';
 
@@ -15,12 +13,13 @@ import Logo from './sidebar/Logo';
 import Navigation from './sidebar/Navigation';
 import BoardHeader from './sidebar/BoardHeader';
 import ModalMenu from './menus/ModalMenu';
+import { useMobileDetection } from '../hooks/mobileDetection';
+import HeaderControls from './sidebar/HeaderControls';
+import MobileNavigation from './sidebar/MobileNavigation';
 
-interface SidebarProps {
-}
 
-const Sidebar: React.FC<SidebarProps> = () => {
-    const [isMobile, setIsMobile] = useState(false);
+const Sidebar  = () => {
+    const isMobile = useMobileDetection();
 
     const [menuOpen, setMenuOpen] = useState(false);
     const [AddNewTaskOpen, setAddNewTaskOpen] = useState(false);
@@ -28,28 +27,11 @@ const Sidebar: React.FC<SidebarProps> = () => {
     const [modalMenuOpen, setModalMenuOpen] = useState(false);
 
 
-    const {currentBoard, setCurrentBoard} = useContext(BoardContext);
-    const {boards, setBoards} = useContext(BoardsContext);
+    const {currentBoard} = useContext(BoardContext);
+    const {boards} = useContext(BoardsContext);
 
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
 
-
-    useEffect(() => {
-        setIsMobile(window.innerWidth <= 768);
-
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-        
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    const imageWidth = isMobile ? 40 : 200;
-    const imageHeight = isMobile ? 40 : 200; 
 
     const handleAddNewTaskClick = () => {
         setAddNewTaskOpen(prevState => !prevState);
@@ -64,56 +46,29 @@ const Sidebar: React.FC<SidebarProps> = () => {
         setModalMenuOpen(prevState => !prevState);
     }
 
-    useEffect(() => {
-        console.log("Modal Menu Open", modalMenuOpen);
-        console.log("Create New Board Open", createNewBoardOpen);
-    }, [modalMenuOpen, createNewBoardOpen])
-
-
-
-
     const handleMenuToggle = () => setMenuOpen(prev => !prev);
-
-    
-
-    
-
+    if(isMobile){
     return(
-        <header className="container flex gap-3 justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
-            <Logo isMobile={isMobile}/>
-            <Navigation menuOpen={menuOpen} handleMenuToggle={handleMenuToggle} handleCreateNewBoardClick={handleCreateNewBoardClick}/>
-            { currentBoard? <BoardHeader currentBoard={currentBoard} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/> : <BoardHeader currentBoard={boards[0]} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/>}
-
-            <div className='flex justify-center items-center '>
-                <ButtonPrimary className='container w-[4rem]  justify-center items-center m-0' onClick={handleAddNewTaskClick} >
-                    <Image src="/assets/icon-add-task-mobile.svg" className='m-0 object-cover w-full p-1' width={10} height={10} alt="Add a task"/>
-                </ButtonPrimary>
-                <ButtonPrimary onClick={handleModalMenuClick} className='bg-transparent'><Image src="/assets/icon-vertical-ellipsis.svg" className='m-0 object-cover w-full  ' width={10} height={10} alt="More Info" /></ButtonPrimary>
-            </div>
-
-            <div className='hidden'>
-                <Image src="/assets/icon-hide-sidebar.svg" alt="Hide Sidebar" width={25} height={25}/>
-            </div>
-
-            {AddNewTaskOpen && (
-                <CreateTask onClose={handleAddNewTaskClick} statuses={statuses}/>
-            )
-                }
-
-            {modalMenuOpen && 
-                <ModalMenu actionType='Board'/>
-            }
-            {createNewBoardOpen && (
-                <CreateBoard onClose={handleCreateNewBoardClick}/>
-            )
-                }
-
-            
-
-
-
-        </header>
+        <MobileNavigation 
+        isMobile={isMobile} 
+        menuOpen={menuOpen} 
+        handleMenuToggle={handleMenuToggle}
+        handleAddNewTaskClick={handleAddNewTaskClick}
+        handleModalMenuClick={handleModalMenuClick}
+        handleCreateNewBoardClick={handleCreateNewBoardClick}
+        AddNewTaskOpen={AddNewTaskOpen}
+        createNewBoardOpen={createNewBoardOpen}
+        modalMenuOpen={modalMenuOpen}
+        currentBoard={currentBoard}
+        boards={boards}
+        statuses={statuses}
+        />
     );
+    
+    }else{
+        return(
+            <header></header>
+        )         
+    }
 }
-
 export default Sidebar;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Board } from '../../types/Board';
 import Image from 'next/image';
 import ThemeToggle from '../buttons/ThemeToggle';
 import { useContext } from 'react';
@@ -15,7 +14,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({menuOpen, handleMenuToggle, handleCreateNewBoardClick }) =>{
 
-    const {boards, setBoards} = useContext(BoardsContext);
+    const {boards} = useContext(BoardsContext);
     const {setCurrentBoard} = useContext(BoardContext);
 
     return(
