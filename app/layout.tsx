@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider>
-        <body className={`${inter.className} lg:grid lg:grid-cols-3 lg:justify-items-center lg:place-items-start`}>
+        <body className={`${inter.className} lg:grid lg:grid-cols-3 lg:justify-items-center lg:place-items-start w-full min-h-screen lg:overflow-y-hidden`}>
         <BoardProvider>
           <BoardsProvider>
             <Sidebar/>

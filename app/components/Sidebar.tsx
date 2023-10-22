@@ -62,7 +62,7 @@ const Sidebar  = () => {
     
     }else{
         return(
-            <DesktopNavigation isMobile={isMobile}/>
+            <DesktopNavigation isMobile={isMobile} handleMenuToggle={handleMenuToggle} handleCreateNewBoardCLick={handleCreateNewBoardClick}/>
         )         
     }
 }

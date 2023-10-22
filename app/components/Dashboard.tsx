@@ -28,7 +28,7 @@ const Dashboard = () => {
     });
 
         return (
-            <main className='min-h-screen overflow-y-hidden  z-0'>
+            <main className='min-h-screen overflow-y-hidden z-0 lg:w-full lg:col-span-2'>
                 <div className="hidden">
                     <h1>{currentBoard?.name}</h1>
                 <div>
@@ -46,7 +46,7 @@ const Dashboard = () => {
                     onClose={() => setTaskOpen(false)}
                 /> }
 
-                <section className=' grid place-items-start grid-cols-3 grid-rows-auto  p-4 w-[73rem] min-h-screen  bg-blue-pale dark:bg-blue-dark z-0 sm:w-[80rem] lg:grid lg:grid-cols-3'>
+                <section className=' overflow-y-visible grid place-items-start grid-cols-3 grid-rows-auto p-4 w-[73rem] min-h-screen  bg-blue-pale dark:bg-blue-dark z-0 sm:w-[75rem]  lg:grid lg:grid-cols-3 lg:gap-4'>
                     {currentBoardWithIcons.columns && currentBoardWithIcons.columns.map((column, index) => (
                         <TaskColumn key={index} column={column} openTask={openTask}/>
                     ))}
