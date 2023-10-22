@@ -10,13 +10,15 @@ import TaskDetails from './task/TaskDetails';
 import useColumnIcons from '../hooks/columnIcons';
 import useTaskOperations from '../hooks/taskOperations';
 import TaskColumn from './dashboard/TaskColumn';
+import { BoardsContext } from './context/BoardsContext';
 
 const Dashboard = () => {
     const { currentBoard, setCurrentBoard } = useContext(BoardContext);
+    const {boards} = useContext(BoardsContext);
     const [taskOpen, setTaskOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
-    const currentBoardWithIcons = useColumnIcons(currentBoard || { name: "", columns: [] });
+    const currentBoardWithIcons = useColumnIcons(currentBoard || boards[0]);
     const { openTask, handleStatusChange, toggleSubtaskCompleted } = useTaskOperations({
         currentBoard,
         setCurrentBoard,
@@ -25,11 +27,10 @@ const Dashboard = () => {
         setTaskOpen
     });
 
-    if (currentBoard && currentBoard.columns) {
         return (
             <main className='min-h-screen overflow-y-hidden'>
                 <div className="hidden">
-                    <h1>{currentBoard.name}</h1>
+                    <h1>{currentBoard?.name}</h1>
                 <div>
                     <ButtonPrimary>Add new Task</ButtonPrimary>
                     <button><Image src="/assets/icon-vertical-ellipsis.svg" alt="More Info" width={10} height={10} /> </button>
@@ -52,9 +53,7 @@ const Dashboard = () => {
                 </section>
             </main>
         );
-    } else {
-        return <main></main>;
-    }
-}
+    } 
+
 
 export default Dashboard;
