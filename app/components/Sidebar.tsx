@@ -7,15 +7,10 @@ import Image from 'next/image';
 import { BoardContext } from './context/BoardContext';
 import { BoardsContext } from './context/BoardsContext';
 
-import CreateTask from './task/CreateTask'
-import CreateBoard from './board/CreateBoard';
-import Logo from './sidebar/Logo';
-import Navigation from './sidebar/Navigation';
-import BoardHeader from './sidebar/BoardHeader';
-import ModalMenu from './menus/ModalMenu';
+
 import { useMobileDetection } from '../hooks/mobileDetection';
-import HeaderControls from './sidebar/HeaderControls';
 import MobileNavigation from './sidebar/MobileNavigation';
+import DesktopNavigation from './sidebar/DesktopNavigation';
 
 
 const Sidebar  = () => {
@@ -67,7 +62,7 @@ const Sidebar  = () => {
     
     }else{
         return(
-            <header></header>
+            <DesktopNavigation isMobile={isMobile}/>
         )         
     }
 }
