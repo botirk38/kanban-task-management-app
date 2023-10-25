@@ -6,7 +6,7 @@ export interface Board {
 export interface Column {
     name: string;
     tasks: Task[];
-    status: {
+    status?: {
         name: string;
         icon?: JSX.Element; 
       };

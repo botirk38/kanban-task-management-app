@@ -11,7 +11,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({column, openTask}) => {
     return(
     <div className='flex flex-col justify-center items-start gap-4 w-full'>
         <span className='flex'>
-            {column.status.icon && (
+            {column.status?.icon && (
                 <span className=' mr-4'>
                     {column.status.icon}
                 </span>
