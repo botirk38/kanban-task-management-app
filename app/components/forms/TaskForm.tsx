@@ -21,7 +21,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
           <input
             value={state.title}
             onChange={e => dispatch({ type: "SET_TITLE", payload: e.target.value })}
-            className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm"
+            className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm dark:text-white"
             type="text"
             placeholder="e.g. Take coffee break"
           />
@@ -33,7 +33,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
           <textarea
             value={state.description}
             onChange={e => dispatch({ type: "SET_DESCRIPTION", payload: e.target.value })}
-            className="dark:bg-blue-mid px-3 py-6 align-text-top text-start rounded-md border border-blue-grayish w-full placeholder:text-sm"
+            className="dark:bg-blue-mid px-3 py-6 align-text-top text-start rounded-md border border-blue-grayish w-full placeholder:text-sm dark:text-white"
             placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
           />
         </div>
@@ -47,7 +47,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
                 <input
                   value={subtask.title}
                   onChange={e => dispatch({ type: "UPDATE_SUBTASK", payload: { title: e.target.value, index: index } })}
-                  className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-sm w-full placeholder:text-sm"
+                  className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-sm w-full placeholder:text-sm dark:text-white"
                   type="text"
                   placeholder="e.g. Make coffee"
                 />
@@ -74,7 +74,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
           <select
             value={state.status}
             onChange={e => dispatch({ type: "SET_STATUS", payload: e.target.value })}
-            className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-md w-full"
+            className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-md w-full dark:text-white"
           >
             {statuses.map((status, index) => (
               <option key={index} value={status}>
