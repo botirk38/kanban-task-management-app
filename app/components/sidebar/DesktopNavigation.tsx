@@ -17,7 +17,6 @@ interface DesktopNavigationProps {
 }
 
 const DesktopNavigation: React.FC<DesktopNavigationProps> = ({ isMobile, handleMenuToggle, handleCreateNewBoardClick, createNewBoardOpen}) => {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
 
 
     return (
