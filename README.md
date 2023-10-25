@@ -63,7 +63,6 @@ Learning to implement and effectively use reducers in React has greatly enhanced
 
 ## 🔗 Live Demo
 
-Check out the live demo of the application [here](<link_to_your_live_demo>).
+Check out the live demo of the application [Here](<https://kanban-app-botir.vercel.app/>).
 
----
 
