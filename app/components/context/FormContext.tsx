@@ -17,7 +17,7 @@ type ThemeProviderProps = {
 };
 
 const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-    const [theme, setTheme] = useState('light'); // Create the state here
+    const [theme, setTheme] = useState('light'); 
 
     useEffect(() => {
         if (theme === 'dark') {

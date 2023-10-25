@@ -42,6 +42,7 @@ const Sidebar  = () => {
     }
 
     const handleMenuToggle = () => setMenuOpen(prev => !prev);
+    
     if(isMobile){
     return(
         <MobileNavigation 
@@ -62,7 +63,7 @@ const Sidebar  = () => {
     
     }else{
         return(
-            <DesktopNavigation isMobile={isMobile} handleMenuToggle={handleMenuToggle} handleCreateNewBoardCLick={handleCreateNewBoardClick}/>
+            <DesktopNavigation isMobile={isMobile} handleMenuToggle={handleMenuToggle} handleCreateNewBoardClick={handleCreateNewBoardClick} createNewBoardOpen={createNewBoardOpen}/>
         )         
     }
 }

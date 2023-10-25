@@ -36,7 +36,7 @@ const ModalMenu: React.FC<ModalMenuProps> = (props) => {
     }, []);
 
     return (
-        <section className={` absolute bg-white flex z-50 flex-col p-4 items-start justify-center  gap-4 rounded-lg ${ props.actionType === "Task" ? "top-20 right-10" : "top-14 right-10"}`} onClick={e => e.stopPropagation()}>
+        <section className={` absolute bg-white flex z-50 flex-col p-4 items-start justify-center  gap-4 rounded-lg ${ props.actionType === "Task" ? "top-20 right-10 lg:right-72" : "top-14 right-10"}`} onClick={e => e.stopPropagation()}>
             <a className="text-sm text-blue-grayish" onClick={handleEditTaskClick}>Edit {props.actionType}</a>
             <a className="text-sm text-red-bright" onClick={handleDeleteTaskClick}>Delete {props.actionType}</a>
 

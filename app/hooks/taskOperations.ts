@@ -4,17 +4,37 @@ import { Task, Board} from "../types/Board";
 interface TaskOperations {
     currentBoard: Board | null;
     setCurrentBoard: (board: Board) => void;
-    selectedTask: Task | null;
-    setSelectedTask: (task: Task) => void;
-    setTaskOpen: (isOpen: boolean) => void;
+    selectedTask?: Task | null;
+    setSelectedTask?: (task: Task) => void;
+    setTaskOpen?: (isOpen: boolean) => void;
+    onClose?: () => void;
 }
 
-const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSelectedTask, setTaskOpen} : TaskOperations) => {
+const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSelectedTask, setTaskOpen, onClose} : TaskOperations) => {
 
     const openTask = useCallback((task: Task) => {
-        setSelectedTask(task);
-        setTaskOpen(true);
+        setSelectedTask?.(task);
+        setTaskOpen?.(true);
     }, [setSelectedTask, setTaskOpen]);
+
+    const addTask = useCallback((newTask: Task) => {
+        if(currentBoard){
+            const updatedBoard = {...currentBoard};
+
+            const columnIndex = currentBoard.columns.findIndex(column => column.name === newTask.status);
+            onClose?.();
+
+            if(columnIndex !== -1){
+                updatedBoard.columns[columnIndex].tasks.push(newTask);
+                setCurrentBoard(updatedBoard);
+            } else {
+                console.error(`No column found with the name ${newTask.status}`);
+            }
+
+        } else {
+            console.error("No current board");
+        }
+    }, [currentBoard, setCurrentBoard, onClose]);
 
     const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         if (currentBoard && selectedTask) {
@@ -30,7 +50,6 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
                 const newColumnIndex = currentBoard.columns.findIndex(column => column.name === updatedSelectedTask.status);
                 
                 if (newColumnIndex !== -1) {
-                    // Add task to the new column
                     updatedBoard.columns[newColumnIndex].tasks.push(updatedSelectedTask);
 
                 } else {
@@ -38,7 +57,7 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
                 }
     
                 setCurrentBoard(updatedBoard);
-                setSelectedTask(updatedSelectedTask);
+                setSelectedTask?.(updatedSelectedTask);
             } else {
                 console.error("Selected task not found within the current board.");
             }
@@ -62,7 +81,7 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
 
       
             setCurrentBoard(updatedBoard);
-            setSelectedTask(updatedSelectedTask);
+            setSelectedTask?.(updatedSelectedTask);
           } else {
             console.error("Selected task not found within the current board.");
           }
@@ -71,7 +90,7 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
         }
       }, [currentBoard, selectedTask, setCurrentBoard, setSelectedTask]);
 
-      return { openTask, handleStatusChange, toggleSubtaskCompleted };
+      return { openTask, handleStatusChange, toggleSubtaskCompleted, addTask};
 
 
 

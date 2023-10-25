@@ -28,11 +28,11 @@ const BoardForm: React.FC<BoardFormProps> = ({ title, state, dispatch, onSubmit,
     };
 
     return (
-        <div className="flex flex-col dark:bg-blue-mid bg-white gap-4 rounded max-h-[calc(100vh-2rem)] overflow-y-auto p-8 w-[23rem]" onClick={e => e.stopPropagation()}>
+        <div className="absolute lg:right-60 flex flex-col dark:bg-blue-mid bg-white gap-4 rounded max-h-[calc(100vh-2rem)] overflow-y-auto p-8 w-[23rem]" onClick={e => e.stopPropagation()}>
             <h2 className="font-bold text-lg dark:text-white">{title}</h2>
             <div className="flex flex-col justify-center items-start w-full gap-4">
-                <p className="dark:text-white font-bold text-sm text-blue-grayish">Board Name</p>
-                <input className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm" placeholder="e.g. Web Design" value={state.boardName} onChange={e => dispatch({ type: "SET_BOARD_NAME", payload: e.target.value })} />
+                <p className="font-bold text-sm text-blue-grayish dark:text-white  ">Board Name</p>
+                <input className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm dark:text-white" placeholder="e.g. Web Design" value={state.boardName} onChange={e => dispatch({ type: "SET_BOARD_NAME", payload: e.target.value })} />
             </div>
 
             <div className="flex flex-col justify-center items-start w-full gap-4">
@@ -40,7 +40,7 @@ const BoardForm: React.FC<BoardFormProps> = ({ title, state, dispatch, onSubmit,
                 {state.boardColumns.map((column, index) => (
                     <React.Fragment key={index}>
                     <input 
-                        className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm" 
+                        className="dark:bg-blue-mid p-2 rounded-md border border-blue-grayish w-full placeholder:text-sm dark:text-white" 
                         placeholder="Todo" 
                         value={column} 
                         onChange={e => handleColumnChange(index, e.target.value)}

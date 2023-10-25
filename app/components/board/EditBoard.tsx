@@ -24,7 +24,11 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
                 name: state.boardName,
                 columns: state.boardColumns.map((columnName, idx)=> ({
                     name: columnName,
-                    tasks: currentBoard.columns.find(c => c.name === originalColumns[idx])?.tasks || []
+                    tasks: currentBoard.columns.find(c => c.name === originalColumns[idx])?.tasks || [],
+                    status: {
+                        name: columnName,
+
+                    }
                 }))
             };
             setCurrentBoard(modifiedBoard);

@@ -36,7 +36,8 @@ const config: Config = {
         'blue-soft': '#F4F7FD',
         white: '#FFFFFF',
         'red-bright': '#EA5555',
-        'red-light': '#FF9898'
+        'red-light': '#FF9898',
+        'green': '#00C48C',
       },
 
       letterSpacing: {

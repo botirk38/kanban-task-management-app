@@ -21,6 +21,7 @@ export type BoardAction =
 const initialState: BoardState = {
     boardName: "",
     boardColumns: []
+
 };
 
 export const boardReducer = (state: BoardState, action: BoardAction): BoardState => {
@@ -54,7 +55,10 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
             name: state.boardName,
             columns: state.boardColumns.map(column => ({
                 name: column,
-                tasks: []
+                tasks: [],
+                status: {
+                    name: column,
+                }
             }))
         });
         dispatch({ type: 'SET_BOARD_NAME', payload: '' });

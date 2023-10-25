@@ -7,7 +7,7 @@ import Logo from "./Logo";
 import Navigation from "./Navigation";
 import Image from "next/image";
 
-interface NavigationProps {
+export interface NavigationProps {
     isMobile: boolean;
     menuOpen: boolean;
     handleMenuToggle: () => void;

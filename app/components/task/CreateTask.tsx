@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import { BoardContext } from "../context/BoardContext";
 import { Subtask, Task } from "../../types/Board";
 import TaskForm from "../forms/TaskForm";
+import useTaskOperations from "@/app/hooks/taskOperations";
+import { BoardsContext } from "../context/BoardsContext";
 
 interface CreateTaskProps {
     onClose: () => void;
@@ -72,6 +74,9 @@ export const reducer = (state: State, action: Action): State => {
 const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
 
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
+    const {boards} = useContext(BoardsContext);
+
+
     const [state, dispatch] = React.useReducer(reducer, {
         title: '',
         description: '',
@@ -79,27 +84,15 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
         subtasks: []
     });
 
-    const addTask = (newTask: Task) => {
-        if(currentBoard){
-            const updatedBoard = {...currentBoard};
-            console.log(newTask)
+    const {addTask} = useTaskOperations({ currentBoard, setCurrentBoard, onClose });
 
-            const columnIndex = currentBoard.columns.findIndex(column => column.name === newTask.status);
-            console.log(newTask.status);
-            onClose();
-
-            if(columnIndex !== -1){
-                updatedBoard.columns[columnIndex].tasks.push(newTask);
-                setCurrentBoard(updatedBoard);
-            }else{
-                console.error(`No column found with the name ${newTask.status}`);
-            }
-
-        }else{
-            console.error("No current board");
-        }
-
+    useEffect(() => {
+    if (!currentBoard && boards && boards.length > 0) {
+        setCurrentBoard(boards[0]);
     }
+    }, [boards, currentBoard, setCurrentBoard]);
+
+
 
   
 

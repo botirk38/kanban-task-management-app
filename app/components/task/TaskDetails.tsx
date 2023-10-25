@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { BoardContext } from '../context/BoardContext';
 import ModalMenu from '../menus/ModalMenu';
+import { Board } from '@/app/types/Board';
+import { BoardsContext } from '../context/BoardsContext';
 
 interface TaskDetailsProps {
     
@@ -13,19 +15,26 @@ interface TaskDetailsProps {
     onClose: () => void;
 }
 
-const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChange, toggleSubtaskCompleted, onClose }) => {
+const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChange, toggleSubtaskCompleted, onClose}) => {
     
-    const {currentBoard} = useContext(BoardContext);
+    const {currentBoard, setCurrentBoard} = useContext(BoardContext);
+    const {boards} = useContext(BoardsContext);
     const [modalMenuOpen, setModalMenuOpen] = useState(false);
+
+    useEffect(() => {
+        if (!currentBoard && boards && boards.length > 0) {
+            setCurrentBoard(boards[0]);
+        }
+        }, [boards, currentBoard, setCurrentBoard]);
     
 
     const taskFromContext = useMemo(() => {
-        for (const column of currentBoard?.columns || []) {
+        for (const column of currentBoard?.columns || boards[0].columns) {
             const task = column.tasks.find(t => t.title === title);
             if (task) return task;
         }
         return null;
-    }, [currentBoard, title]);
+    }, [currentBoard, title, boards]);
 
     const handleModalMenuClick = useCallback(() => {
         setModalMenuOpen(prevState => !prevState);
@@ -49,13 +58,16 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChan
 
                 <ul>
                     {taskFromContext?.subtasks.map((subtask, index) => (
-                        <div key={index} className=' dark:bg-blue-dark flex justify-start items-center gap-4 mb-4 bg-blue-pale p-5 rounded-lg'>
+                        <div key={index} className=' relative dark:bg-blue-dark flex justify-start items-center gap-4 mb-4 bg-blue-pale p-5 rounded-lg'>
                             <input 
-                                className={`appearance-none bg-white  p-3 relative ${subtask.isCompleted ? "bg-purple-dark after:bg-[url('/assets/icon-check.svg')]  after:bg-no-repeat after:absolute after:w-4 after:h-4 bg-center after:top-[0.35rem] after:bg-contain after:left-1 " : ''}`} 
+                                className={`appearance-none p-3 ${subtask.isCompleted ? "bg-purple-dark" : 'bg-white dark:bg-blue-gray'}`} 
                                 type='checkbox' 
                                 checked={subtask.isCompleted} 
                                 onChange={() => toggleSubtaskCompleted(index)}
                             />
+                            {subtask.isCompleted && (
+                                <Image src="/assets/icon-check.svg" alt="subtask completed" width={20} height={20} className=' absolute top-1/2 left-70 transform-translate-x-56 -translate-y-1/2 ' onClick={ () => toggleSubtaskCompleted(index)} />
+                            )}
                             <li className={`text-blue-dark font-bold dark:text-white text-md ${subtask.isCompleted ? "line-through text-blue-gray-light dark:text-blue-grayish" : ""}`}>{subtask.title}</li>
                         </div>
                     ))}
