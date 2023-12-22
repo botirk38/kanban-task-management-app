@@ -72,7 +72,7 @@ const Dashboard = () => {
                     onClose={() => setTaskOpen(false)}
                 /> }
 
-                <section className=' overflow-y-visible grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-[100rem] gap-10 min-h-screen lg:w-[150rem] 2xl:min-w-[200rem] bg-blue-pale dark:bg-blue-dark z-0 lg:gap-20'>
+                <section className=' overflow-y-visible grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-[120rem] min-h-screen lg:w-[150rem] 2xl:min-w-[200rem] bg-blue-pale dark:bg-blue-dark z-0 lg:gap-10'>
                     {currentBoardWithIcons.columns.map((column, index) => (
                         <TaskColumn key={index} column={column} openTask={openTask}/>
                     ))}
