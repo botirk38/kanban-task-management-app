@@ -1,4 +1,3 @@
-import { SignedIn, UserButton } from "@clerk/nextjs";
 import CreateBoard from "../board/CreateBoard";
 import ModalMenu from "../menus/ModalMenu";
 import CreateTask from "../task/CreateTask";
@@ -63,9 +62,7 @@ const MobileNavigation: React.FC<NavigationProps> = ({
                 <CreateBoard onClose={handleCreateNewBoardClick}/>
             )
                 }
-            <SignedIn>
-                <UserButton />
-            </SignedIn>
+     
         </header>
     );
 
