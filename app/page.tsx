@@ -1,9 +1,10 @@
+import { UserButton } from "@clerk/nextjs"
 
 
 const Page = () => {
     return (
         <div>
-            <h1>Page</h1>
+            <UserButton afterSignOutUrl="/"/>
         </div>
     )
 }
