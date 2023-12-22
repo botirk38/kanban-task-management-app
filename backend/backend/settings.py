@@ -1,18 +1,18 @@
 from dotenv import load_dotenv
 import os
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hmr6_yqlq$tctsvv3v420^@xim8nm^ml68+gf84&%@p+bg0g8m'
-
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'kanban_boards.apps.KanbanBoardsConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -63,20 +65,30 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-load_dotenv()
+
+# Database
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+
+db_name = os.getenv('DB_NAME')
+db_user = os.getenv('DB_USER')
+db_pass = os.getenv('DB_PASSWORD')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': os.getenv('DB_NAME'),
-        'CLIENT': {
-            'host': os.getenv('DB_HOST'),
-            'username': os.getenv('DB_USER'),
-            'password': os.getenv('DB_PASSWORD'),
-            'authMechanism': 'SCRAM-SHA-1',
-            'authSource': 'admin',
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD':db_pass ,
+        'HOST': 'localhost',
+        'PORT': '',      
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
 
 
