@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { ClerkProvider } from "@clerk/clerk-react";
+import { ClerkProvider } from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: "Kanban Task Management App",
