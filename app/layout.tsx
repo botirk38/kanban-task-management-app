@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "A task management app built with Next.js and Tailwind CSS",
 };
 
-export default function DashboardLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
