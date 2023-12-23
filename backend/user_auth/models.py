@@ -14,7 +14,7 @@ class UserProfile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_or_update_profile(sender, instance, created, **kwargs):
-    if not created:
+    if created:
         UserProfile.objects.create(user=instance)
     else:
         instance.profile.save()
