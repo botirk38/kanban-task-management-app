@@ -4,8 +4,7 @@ from .models import UserProfile
 from .serializers import UserProfileSerializer
 from django.contrib.auth import login, authenticate, logout
 from .serializers import UserSerializer
-
-
+from django.contrib.auth.models import User
 class UpdateUserProfileView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -20,6 +19,8 @@ class UpdateUserProfileView(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -33,7 +34,13 @@ class LoginView(views.APIView):
         return Response({'message': 'User logged in successfully'})
 
 class RegisterView(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
+
     serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.none()
+
 
 class LogoutView(views.APIView):
     def post(self, request, *args, **kwargs):

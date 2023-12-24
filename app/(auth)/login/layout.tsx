@@ -1,5 +1,5 @@
 import Logo from "@/app/components/auth/Logo"
-export default function SignupLayout({
+export default function LoginLayout({
   children, }: {
   children: React.ReactNode
 }) {
