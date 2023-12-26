@@ -11,7 +11,7 @@ const HeaderControls: React.FC<HeaderControlsProps> = ({handleAddNewTaskClick, h
 
     return(
         <div className='flex justify-center items-center '>
-        <ButtonPrimary className='container w-[4rem] justify-center items-center m-0' onClick={handleAddNewTaskClick}>
+        <ButtonPrimary className='container w-[4rem] justify-center items-center mr-6' onClick={handleAddNewTaskClick}>
             <Image src="/assets/icon-add-task-mobile.svg" className='m-0 object-cover w-full p-1' width={10} height={10} alt="Add a task" />
         </ButtonPrimary>
         <ButtonPrimary onClick={handleModalMenuClick} className='bg-transparent'>

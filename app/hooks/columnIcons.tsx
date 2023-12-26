@@ -3,7 +3,7 @@ import { Board } from "../types/Board";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
-const useColumnIcons = (currentBoard: Board) => {
+const useColumnIcons = (currentBoard: Board | null) => {
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || []));
 
     return useMemo(() => {

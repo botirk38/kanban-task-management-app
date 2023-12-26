@@ -5,7 +5,13 @@ from .serializers import UserProfileSerializer
 from django.contrib.auth import login, authenticate, logout
 from .serializers import UserSerializer
 from django.contrib.auth.models import User
-class UpdateUserProfileView(views.APIView):
+from django.shortcuts import get_object_or_404
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class UserProfileView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -16,7 +22,26 @@ class UpdateUserProfileView(views.APIView):
             serializer.save()
 
             return Response(serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        user_profile = get_object_or_404(UserProfile, user=request.user)
+        serializer = UserProfileSerializer(user_profile)
+        return Response(serializer.data)
+    
+    def patch(self, request, *args, **kwargs):
+        user_profile = get_object_or_404(UserProfile, user=request.user)
+        serializer = UserProfileSerializer(user_profile, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        logger.error(f"UserProfile update failed: {serializer.errors}")
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]

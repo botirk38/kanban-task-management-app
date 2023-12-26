@@ -5,7 +5,7 @@ import BoardHeader from "./BoardHeader";
 import HeaderControls from "./HeaderControls";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
-import Image from "next/image";
+
 
 export interface NavigationProps {
     isMobile: boolean;
@@ -39,16 +39,13 @@ const MobileNavigation: React.FC<NavigationProps> = ({
 }) => {
 
     return(
-    <header className="container flex gap-3 justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
+    <header className="container flex  justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
             <Logo isMobile={isMobile}/>
             <Navigation menuOpen={menuOpen} handleMenuToggle={handleMenuToggle} handleCreateNewBoardClick={handleCreateNewBoardClick}/>
             { currentBoard? <BoardHeader currentBoard={currentBoard} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/> : <BoardHeader currentBoard={boards[0]} handleMenuToggle={handleMenuToggle} menuOpen={menuOpen}/>}
 
-            <HeaderControls handleAddNewTaskClick={handleAddNewTaskClick} handleModalMenuClick={handleModalMenuClick}/>
-
-            <div className='hidden'>
-                <Image src="/assets/icon-hide-sidebar.svg" alt="Hide Sidebar" width={25} height={25}/>
-            </div>
+            <HeaderControls handleAddNewTaskClick={handleAddNewTaskClick} handleModalMenuClick={handleModalMenuClick}/> 
+        
 
             {AddNewTaskOpen && (
                 <CreateTask onClose={handleAddNewTaskClick} statuses={statuses}/>
@@ -62,6 +59,7 @@ const MobileNavigation: React.FC<NavigationProps> = ({
                 <CreateBoard onClose={handleCreateNewBoardClick}/>
             )
                 }
+
      
         </header>
     );

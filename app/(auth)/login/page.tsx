@@ -15,13 +15,20 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import {useRouter} from "next/navigation";
 
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/components/ui/use-toast"
+import Link from "next/link"
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   password: z.string().min(8).max(100),
 })
 export default function LoginPage(){
+  
+  const router = useRouter();
+  const {toast} = useToast();
 
   const form  = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,48 +38,79 @@ export default function LoginPage(){
       },
     })
 
-  function onSubmit(values: z.infer<typeof formSchema>){
+  async function onSubmit(values: z.infer<typeof formSchema>){
+
+    const response = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(values),
+    credentials: 'include',
+  }); 
+
+    const data = await response.json()
     
-    console.log(values)
+    if (!response.ok) {
+    let errorMsg = [];
+    if (data.error && data.error.email) {
+      errorMsg.push(data.error.email[0]); // Assuming the error message is in an array
+    }
+    if (data.error && data.error.username) {
+      errorMsg.push(data.error.username[0]); // Assuming the error message is in an array
+    }
+    toast({
+      title: "Login Status: ",
+      description: errorMsg.join(" "), // Combines messages with a space
+    });
+  } else {
+    console.log("Logged in successfully")
+    toast({
+      title: "Login Status: ",
+      description: "User logged in successfully!",
+    });
+      router.push('/dashboard');
+  }
+    
+    
   }
 
 
   return(
     <>
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField control= {form.control} name="username" render={({field}) => (
-          <FormItem>
-            <FormLabel>Username</FormLabel>
-            <FormControl>
-              <Input placeholder="nightly" {...field}/>
-            </FormControl>
-            <FormDescription>
-              This is your public display name.
-            </FormDescription>
-            <FormMessage/>
-          </FormItem>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField control= {form.control} name="username" render={({field}) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="nightly" {...field}/>
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage/>
+            </FormItem>
+            )}
+            />
+          <FormField control={form.control} name="password" render={({field}) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input placeholder ="abc123456" {...field}/>
+              </FormControl>
+
+              <FormDescription>
+                This will be your password
+              </FormDescription>
+              <FormMessage/>
+            </FormItem>
           )}
           />
-        <FormField control={form.control} name="password" render={({field}) => (
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl>
-              <Input placeholder ="abc123456" {...field}/>
-            </FormControl>
+          <Button type="submit">Login with email.</Button>
+          <Toaster/>
+        </form>
+      </Form>
+     <Link className="absolute top-10 left-72 md:left-80 lg:left-[28rem] 2xl:left-[60rem]" href="/signup">Haven't signed up? Sign up here.</Link>
 
-            <FormDescription>
-              This will be your password
-            </FormDescription>
-            <FormMessage/>
-          </FormItem>
-        )}
-        />
-        <Button type="submit">Login with email.</Button>
-        <Button className="absolute top-0 left-80 md:left-80 lg:left-[28rem] 2xl:left-[60rem]" variant="ghost">Haven't signed up? Sign up here.</Button>
-
-      </form>
-    </Form>
     </>
   )
 }

@@ -20,8 +20,8 @@ const Dashboard = () => {
     const {boards} = useContext(BoardsContext);
     const [taskOpen, setTaskOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name) || boards[0].columns.flatMap(column => column.name) || []));
-    const currentBoardWithIcons = useColumnIcons(currentBoard && currentBoard.columns ? currentBoard : boards[0]);
+    const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name)));
+    const currentBoardWithIcons = useColumnIcons(currentBoard && currentBoard.columns ? currentBoard : null);
 
     const [addTaskClicked, setAddTaskClicked] = useState(false);
     const [modalMenuClicked, setModalMenuClicked] = useState(false);
@@ -73,7 +73,7 @@ const Dashboard = () => {
                 /> }
 
                 <section className=' overflow-y-visible grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-[120rem] min-h-screen lg:w-[150rem] 2xl:min-w-[200rem] bg-blue-pale dark:bg-blue-dark z-0 lg:gap-10'>
-                    {currentBoardWithIcons.columns.map((column, index) => (
+                    {currentBoardWithIcons?.columns?.map((column, index) => (
                         <TaskColumn key={index} column={column} openTask={openTask}/>
                     ))}
 
