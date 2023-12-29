@@ -1,18 +1,20 @@
 export interface Board {
     name: string;
     columns: Column[];
-    id: number
+    id: string
     user: number
 }
 
 export interface Column {
     name: string;
     tasks: Task[];
-    id: number; 
+    id: string 
     status?: {
         name: string;
         icon?: JSX.Element; 
       };
+
+    columnId: string;
 }
 
 export interface Task {

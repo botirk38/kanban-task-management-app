@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useContext } from "react";
 import { BoardContext } from "../context/BoardContext";
-import { Subtask, Task } from "../../types/Board";
+import { Column, Subtask, Task } from "../../types/Board";
 import TaskForm from "../forms/TaskForm";
 import useTaskOperations from "@/app/hooks/taskOperations";
 import { BoardsContext } from "../context/BoardsContext";
@@ -12,18 +12,21 @@ interface CreateTaskProps {
 
 }
 
+
+
 export type State = {
     title: string;
     description: string;
     status: string;
     subtasks: Subtask[];
+    columnId: string;
 
 }
 
 export type Action =
     | { type: 'SET_TITLE', payload: string }
     | { type: 'SET_DESCRIPTION', payload: string }
-    | { type: 'SET_STATUS', payload: string }
+    | { type: 'SET_STATUS', payload: string, columns: Column[] }
     | { type: 'ADD_SUBTASK', payload: Subtask }
     | { type: 'DELETE_SUBTASK', payload: number }
     | { type: 'TOGGLE_SUBTASK_COMPLETED', payload: number }
@@ -37,7 +40,14 @@ export const reducer = (state: State, action: Action): State => {
         case 'SET_DESCRIPTION':
             return { ...state, description: action.payload };
         case 'SET_STATUS':
-            return { ...state, status: action.payload };
+            const newStatus = action.payload;
+            const columnMatch = columns.find( (column : Column) => column.name === newStatus)
+            const newColumnId = columnMatch ? columnMatch.id : state.columnId;
+            return { 
+                ...state, 
+                status: newStatus,
+                columnId: newColumnId // Update columnId when status changes
+    }; 
         case 'ADD_SUBTASK':
             return { ...state, subtasks: [...state.subtasks, action.payload] };
         case 'DELETE_SUBTASK':
@@ -75,13 +85,15 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
 
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
     const {boards} = useContext(BoardsContext);
+    const columns = currentBoard ? currentBoard.columns : [];
 
 
     const [state, dispatch] = React.useReducer(reducer, {
         title: '',
         description: '',
         status: statuses[0],
-        subtasks: []
+        subtasks: [],
+        columnId: '' 
     });
 
     const {addTask} = useTaskOperations({ currentBoard, setCurrentBoard, onClose });

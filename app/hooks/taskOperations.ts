@@ -10,6 +10,32 @@ interface TaskOperations {
     onClose?: () => void;
 }
 
+const createTask = async( task: Task, boardId : string, columnId: string) => {
+    
+    try {
+        const response = await fetch(`/api/boards/${boardId}/columns/${columnId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(task)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const createdTask = await response.json();
+
+        return createdTask;
+
+    } catch (err : any) {
+        console.error("Error creating task:", err);
+
+    }
+
+}
+
 const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSelectedTask, setTaskOpen, onClose} : TaskOperations) => {
 
     const openTask = useCallback((task: Task) => {
@@ -17,24 +43,31 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
         setTaskOpen?.(true);
     }, [setSelectedTask, setTaskOpen]);
 
-    const addTask = useCallback((newTask: Task) => {
-        if(currentBoard){
-            const updatedBoard = {...currentBoard};
+    const addTask = useCallback(async (newTask : Task) => {
+    if (currentBoard) {
+        // Assuming you have boardId and columnId available
+        const createdTask = await createTask(newTask, currentBoard.id, newTask.columnId);
 
-            const columnIndex = currentBoard.columns.findIndex(column => column.name === newTask.status);
-            onClose?.();
+        if (createdTask) {
+            const updatedBoard = { ...currentBoard };
+            const columnIndex = currentBoard.columns.findIndex(column => column.id === createdTask.columnId);
 
-            if(columnIndex !== -1){
-                updatedBoard.columns[columnIndex].tasks.push(newTask);
+            if (columnIndex !== -1) {
+                updatedBoard.columns[columnIndex].tasks.push(createdTask);
                 setCurrentBoard(updatedBoard);
             } else {
-                console.error(`No column found with the name ${newTask.status}`);
+                console.error(`No column found with the ID ${createdTask.columnId}`);
             }
-
-        } else {
-            console.error("No current board");
         }
-    }, [currentBoard, setCurrentBoard, onClose]);
+
+        onClose?.();
+
+    } else {
+        console.error("No current board");
+    }
+}, [currentBoard, setCurrentBoard, onClose]);
+
+
 
     const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         if (currentBoard && selectedTask) {
