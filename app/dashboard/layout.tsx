@@ -1,7 +1,6 @@
 import '../globals.css'
 import Sidebar from '../components/Sidebar';
-import { BoardProvider } from '../components/context/BoardContext';
-import { BoardsProvider } from '../components/context/BoardsContext';
+
 
 
 
@@ -16,13 +15,11 @@ export default function DashboardLayout({
 
 
   return (
-        <section className={`lg:grid lg:grid-cols-3 lg:justify-items-center  lg:place-items-start w-full min-h-screen`}>
-        <BoardProvider>
-          <BoardsProvider>
+        <section className={`lg:grid lg:grid-cols-3 lg:justify-items-center lg:place-items-start w-full min-h-screen`}>
+        
             <Sidebar/>
             {children}
-          </BoardsProvider>
-        </BoardProvider>
+         
 
         </section>
   )

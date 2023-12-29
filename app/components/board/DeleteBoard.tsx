@@ -11,7 +11,7 @@ interface DeleteBoardProps {
 
 const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose}) => {
 
-    const { boards, setBoards } = useContext(BoardsContext);
+    const { boards, setBoards, deleteBoard } = useContext(BoardsContext);
     const { currentBoard, setCurrentBoard } = useContext(BoardContext);
 
     const handleCancelClick = () =>{
@@ -19,10 +19,14 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose}) => {
     }
 
     const handleDeleteBoard = () =>{
-        const updatedBoards = boards.filter(b => b.name !== currentBoard?.name);
-        setBoards(updatedBoards);
-        setCurrentBoard(updatedBoards[0]);
-        onClose();
+        
+        if (currentBoard && currentBoard.id){
+            console.log(currentBoard, currentBoard?.id)
+            deleteBoard(currentBoard.id)
+            setCurrentBoard(boards[0]);
+            console.log(currentBoard);
+            onClose();
+        }
     }
 
     return(

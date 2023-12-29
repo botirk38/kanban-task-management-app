@@ -1,14 +1,19 @@
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
 from .serializers import BoardSerializer
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets,  status
 from rest_framework.response import Response
 from .models import Board, Column, Task, Subtask
 from .serializers import BoardSerializer, ColumnSerializer, TaskSerializer, SubtaskSerializer
+from rest_framework.exceptions import NotFound
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class BoardViewSet(viewsets.ModelViewSet):
     
+
+
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
     permission_classes = [IsAuthenticated]
@@ -16,13 +21,63 @@ class BoardViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Board.objects.all().filter(user=self.request.user)
     
-    def perform_create(self, serialzer):
-        serialzer.save(user = self.request.user)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            logger.debug(f"Board creation failed: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            logger.error(f"Error deleting board: {e}")
+            return Response({"detail": "Error deleting board"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def perform_destroy(self, instance):
+        instance.delete()
+
+
+    
+        
 class ColumnViewSet(viewsets.ModelViewSet):
     queryset = Column.objects.all()
     serializer_class = ColumnSerializer
+    
+    def get_queryset(self):
+        board_id = self.kwargs.get('board_id')
 
+        if not Board.objects.filter(id=board_id).exists():
+            raise NotFound('Board not found')
+
+        return Column.objects.filter(board_id = board_id)
+    
+    def create(self, request, *args, **kwargs):
+        board_id = self.kwargs.get('board_id')
+
+        try:
+            board = Board.objects.filter(id = board_id)
+
+        except Board.DoesNotExist:
+            return Response( {"detail": "Board not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ColumnSerializer
+
+        if serializer.is_valid():
+            serializer.save(board=board)
+            headers = self.get_success_headers(serializer.data)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()

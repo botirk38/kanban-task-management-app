@@ -4,11 +4,18 @@ from .views import BoardViewSet, ColumnViewSet, TaskViewSet, SubtaskViewSet
 
 router = DefaultRouter()
 router.register(r'boards', BoardViewSet)
-router.register(r'columns', ColumnViewSet)
-router.register(r'tasks', TaskViewSet)
-router.register(r'subtasks', SubtaskViewSet)
+
+
+
+
+board_columns = [
+    path('boards/<int:board_id>/columns/', ColumnViewSet.as_view({'get': 'list', 'post': 'create'}), name='board-columns'),
+    # Add paths for column detail, update, and delete
+    path('boards/<int:board_id>/columns/<int:pk>/', ColumnViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='board-column-detail'),
+]
 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('', include(board_columns)),
 ]

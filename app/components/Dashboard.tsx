@@ -21,7 +21,11 @@ const Dashboard = () => {
     const [taskOpen, setTaskOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name)));
-    const currentBoardWithIcons = useColumnIcons(currentBoard && currentBoard.columns ? currentBoard : null);
+    const currentBoardWithIcons = useColumnIcons(currentBoard && currentBoard.columns ? currentBoard : boards[0]);
+    
+    useEffect( () => {
+        console.log(currentBoard)
+    }, [currentBoard])
 
     const [addTaskClicked, setAddTaskClicked] = useState(false);
     const [modalMenuClicked, setModalMenuClicked] = useState(false);

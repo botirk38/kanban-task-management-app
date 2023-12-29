@@ -1,7 +1,7 @@
 
 'use client'
 
-import {createContext} from 'react';
+import {createContext, useEffect} from 'react';
 import { useState, FC } from 'react';
 import { Board } from '../../types/Board';
 
@@ -23,7 +23,8 @@ type BoardProviderProps = {
 
 export const BoardProvider: FC<BoardProviderProps> = ({children}) => {
     const [currentBoard, setCurrentBoard] = useState<Board | null>(null);
-
+    
+    
     return (
         <BoardContext.Provider value={{currentBoard, setCurrentBoard}}>
             {children}

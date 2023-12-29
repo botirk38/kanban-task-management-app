@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Board, Column, Task, Subtask
 
 class SubtaskSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)  # Include id for update identification
+    id = serializers.IntegerField(required=False)  
 
     class Meta:
         model = Subtask
@@ -48,8 +48,18 @@ class ColumnSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'tasks']
 
 class BoardSerializer(serializers.ModelSerializer):
+    columns = ColumnSerializer(many=True, required=False)
     class Meta:
         model = Board
-        fields = ['id', 'name', 'user']
+        fields = ['id', 'name', 'user', 'columns']
         read_only_fields = ('user',)
 
+    def create(self, validated_data):
+        columns_data = validated_data.pop('columns', [])
+        board = Board.objects.create(**validated_data)
+
+        for column_data in columns_data:
+            Column.objects.create(board=board, **column_data)
+
+        return board
+    

@@ -46,45 +46,27 @@ MIDDLEWARE = [
     
 ]
 
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'debug.log',
-            'formatter': 'verbose',
-        },
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
+            'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': True,
         },
-        'user_auth': {
-            'handlers': ['file', 'console'],
+        'django.request': {
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,
         },
     },
 }
+
 
 
 SESSION_COOKIE_AGE = 86400 # Sessions last 24 hours

@@ -30,6 +30,38 @@ export async function GET(){
 	
 }
 
+
+	export async function POST(request: Request){
+
+		const cookieStore = cookies();
+		const sessionId = cookieStore.get('sessionid')?.value;
+		const csrfToken = cookieStore.get('csrftoken')?.value;
+		
+		
+			const data  = await request.json()
+
+			const response = await fetch("http://127.0.0.1:8000/boards/boards/", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
+					'X-CSRFToken': csrfToken,
+				},
+				body: JSON.stringify(data) 
+			});
+
+			const response_data = await response.json();
+
+			if (!response.ok){
+			      return new Response(JSON.stringify({ error: response_data }), { status: response.status });
+			}
+			return new Response(JSON.stringify(response_data), { status: 200 });
+			
+				
+}
+
+
+
 	
 		
 				

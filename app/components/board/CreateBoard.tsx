@@ -39,13 +39,12 @@ export const boardReducer = (state: BoardState, action: BoardAction): BoardState
 
 const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
     const [state, dispatch] = useReducer(boardReducer, initialState);
-    const { currentBoard, setCurrentBoard } = useContext(BoardContext);
-    const {boards, setBoards} = useContext(BoardsContext);
+    const {setCurrentBoard } = useContext(BoardContext);
+    const {addBoard} = useContext(BoardsContext);
 
     const createBoard = (newBoard: Board) => {
-        const updatedBoards = [...boards, newBoard];
         setCurrentBoard(newBoard);
-        setBoards(updatedBoards);
+        addBoard(newBoard); 
         onClose();
     }
 

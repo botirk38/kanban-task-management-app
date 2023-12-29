@@ -10,6 +10,7 @@ interface BoardListProps {
 
 const BoardList: React.FC<BoardListProps> = ({ boards, onBoardClick }) => (
     <ul className='flex flex-col gap-3 justify-center items-start font-bold'>
+        
         {boards?.map((board, index) => (
             <BoardItem key={index} board={board} onClick={onBoardClick} />
         ))}
