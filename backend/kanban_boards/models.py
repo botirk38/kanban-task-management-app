@@ -17,7 +17,8 @@ class Column(models.Model):
 class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    status = models.ForeignKey(Column, related_name='tasks', on_delete=models.CASCADE)
+    status = models.CharField(max_length=100)
+
 
     def __str__(self):
         return self.title
