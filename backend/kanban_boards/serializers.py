@@ -15,17 +15,35 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ['id', 'title', 'description', 'subtasks', 'status']
 
+    def _set_column_from_status(self, task, status_name):
+        try:
+            column = Column.objects.get(name=status_name)
+            task.column = column
+            task.status = status_name
+        except Column.DoesNotExist:
+            raise serializers.ValidationError({'status': 'Invalid status name, no corresponding column found'})
+
     def create(self, validated_data):
         subtasks_data = validated_data.pop('subtasks', [])
-        task = Task.objects.create(**validated_data)
+        status_name = validated_data.pop('status', None)
+
+        task = Task(**validated_data)
+        if status_name:
+            self._set_column_from_status(task, status_name)
+        task.save()
+
         for subtask_data in subtasks_data:
             Subtask.objects.create(task=task, **subtask_data)
         return task
 
     def update(self, instance, validated_data):
         subtasks_data = validated_data.pop('subtasks', [])
+        status_name = validated_data.pop('status', None)
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+        if status_name:
+            self._set_column_from_status(instance, status_name)
         instance.save()
 
         for subtask_data in subtasks_data:

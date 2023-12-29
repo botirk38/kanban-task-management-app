@@ -49,6 +49,7 @@ class BoardViewSet(viewsets.ModelViewSet):
 class ColumnViewSet(viewsets.ModelViewSet):
     queryset = Column.objects.all()
     serializer_class = ColumnSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         board_id = self.kwargs.get('board_id')
@@ -82,9 +83,46 @@ class ColumnViewSet(viewsets.ModelViewSet):
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated]
+
+   
+
+    def create(self, request, *args, **kwargs):
+        column_id = kwargs.get('column_id')
+        try:
+            column = Column.objects.get(id=column_id)
+        except Column.DoesNotExist:
+            return Response({'detail': 'Column not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(column=column)  
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        task = self.get_object()
+        column_id = kwargs.get('column_id')
+
+        if column_id:
+            try:
+                column = Column.objects.get(id=column_id)
+                task.column = column  
+            except Column.DoesNotExist:
+                return Response({'detail': 'Column not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(task, data=request.data, partial='partial' in request.method)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+
+
 
 
 class SubtaskViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Subtask.objects.all()
     serializer_class = SubtaskSerializer
 

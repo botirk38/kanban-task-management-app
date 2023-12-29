@@ -14,11 +14,15 @@ class Column(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_column_choices():
+        return [ (column.name, column.name) for column in Column.objects.all()]
+
 class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    column = models.ForeignKey(Column, related_name='tasks', on_delete=models.CASCADE )
     status = models.CharField(max_length=100)
-
 
     def __str__(self):
         return self.title
@@ -26,7 +30,7 @@ class Task(models.Model):
 class Subtask(models.Model):
     title = models.CharField(max_length=255)
     is_completed = models.BooleanField(default=False)
-    task = models.ForeignKey(Task, related_name='subtasks', on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='subtasks', on_delete=models.CASCADE, )
 
     def __str__(self):
         return self.title
