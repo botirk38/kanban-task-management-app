@@ -2,7 +2,7 @@ import BoardForm from "../forms/BoardForm";
 import { boardReducer } from "./CreateBoard";
 import React, { useContext, useReducer, useState } from "react";
 import { BoardContext } from "../context/BoardContext";
-
+import { Board } from "@/app/types/Board";
 interface EditBoardProps  {
     onClose: () => void;
 }
@@ -19,27 +19,53 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
 
     const editBoard = () => {
         if (currentBoard) {
-            const modifiedBoard = {
+            const modifiedBoard: Board = {
                 ...currentBoard,
                 name: state.boardName,
-                columns: state.boardColumns.map((columnName, idx)=> ({
+                columns: state.boardColumns.map((columnName, idx) => ({
+                    ...currentBoard.columns[idx],  // Spread existing properties
                     name: columnName,
-                    tasks: currentBoard.columns.find(c => c.name === originalColumns[idx])?.tasks || [],
-                    status: {
-                        name: columnName,
-
-                    }
-                }))
+                    
+                })),
             };
-            setCurrentBoard(modifiedBoard);
+            return modifiedBoard;
         } else {
             console.error("No current board");
         }
-    }
+}
 
-    const handleSubmit = (e: React.FormEvent) => {
+
+    const updateBoard = async (board : Board | undefined) => {
+        if (!board) {
+            throw new Error("Board is empty.");
+        }
+
+
+    try {
+        const response = await fetch(`/api/boards/${board.id}`, {
+            method: 'PATCH', 
+            headers: {
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify(board)
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update board');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating board:', error);
+        
+    }
+};
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        editBoard();
+        const modifiedBoard = editBoard();
+        const updatedBoard = await updateBoard(modifiedBoard)
+        setCurrentBoard(updatedBoard)
         onClose();
     }
 

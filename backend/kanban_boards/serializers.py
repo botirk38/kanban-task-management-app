@@ -52,7 +52,7 @@ class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         fields = ['id', 'name', 'user', 'columns']
-        read_only_fields = ('user',)
+        read_only_fields = ('user', 'id')
 
     def create(self, validated_data):
         columns_data = validated_data.pop('columns', [])
@@ -62,4 +62,30 @@ class BoardSerializer(serializers.ModelSerializer):
             Column.objects.create(board=board, **column_data)
 
         return board
+
+    def update(self, instance, validated_data):
+        columns_data = validated_data.pop('columns', [])
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+
+        # Keep track of column IDs to identify which columns to delete
+        existing_column_ids = set(instance.columns.values_list('id', flat=True))
+
+        for column_data in columns_data:
+            column_id = column_data.get('id')
+            if column_id and column_id in existing_column_ids:
+                column_instance = Column.objects.get(id=column_id)
+                for key, value in column_data.items():
+                    setattr(column_instance, key, value)
+                column_instance.save()
+                existing_column_ids.remove(column_id)
+            elif column_id is None:
+                Column.objects.create(board=instance, **column_data)
+
+        # Delete columns that were not included in the updated data
+        Column.objects.filter(board=instance, id__in=existing_column_ids).delete()
+
+        return instance
+
+
     

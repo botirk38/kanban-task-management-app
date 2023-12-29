@@ -19,9 +19,9 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose}) => {
     }
 
     const handleDeleteBoard = () =>{
-        
+         console.log(currentBoard, currentBoard?.id)
         if (currentBoard && currentBoard.id){
-            console.log(currentBoard, currentBoard?.id)
+           
             deleteBoard(currentBoard.id)
             setCurrentBoard(boards[0]);
             console.log(currentBoard);
@@ -32,7 +32,7 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose}) => {
     return(
         <section className="fixed min-h-screen  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 " onClick={onClose}>
             <div className="flex flex-col dark:bg-blue-mid bg-white gap-4 rounded max-h-[calc(100vh-2rem)] overflow-y-auto p-8 w-[23rem]" onClick={e => e.stopPropagation()}>
-                <h1 className='text-lg text-red-bright font-bold'>Delete this Task ?</h1>
+                <h1 className='text-lg text-red-bright font-bold'>Delete this Board ?</h1>
                 <p className='text-blue-grayish'>Are you sure you want to delete the &apos;{currentBoard?.name}&apos;
                     ? This action cannot be reversed.
                 </p>

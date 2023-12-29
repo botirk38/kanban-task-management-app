@@ -3,7 +3,7 @@ import BoardForm from '../forms/BoardForm';
 import { Board } from '../../types/Board';
 import { BoardContext } from '../context/BoardContext';
 import { BoardsContext } from '../context/BoardsContext';
-
+import { useEffect } from 'react';
 interface CreateBoardProps {
     onClose: () => void;
 }
@@ -42,9 +42,10 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
     const {setCurrentBoard } = useContext(BoardContext);
     const {addBoard} = useContext(BoardsContext);
 
-    const createBoard = (newBoard: Board) => {
-        setCurrentBoard(newBoard);
+
+    const createBoard = async (newBoard: Board) => {
         addBoard(newBoard); 
+        setCurrentBoard(newBoard);
         onClose();
     }
 
@@ -60,6 +61,7 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
                 }
             }))
         });
+
         dispatch({ type: 'SET_BOARD_NAME', payload: '' });
         dispatch({ type: 'SET_BOARD_COLUMNS', payload: [] });
     }

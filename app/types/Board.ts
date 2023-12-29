@@ -1,12 +1,14 @@
 export interface Board {
     name: string;
     columns: Column[];
-    id: string,
+    id: number
+    user: number
 }
 
 export interface Column {
     name: string;
     tasks: Task[];
+    id: number; 
     status?: {
         name: string;
         icon?: JSX.Element; 

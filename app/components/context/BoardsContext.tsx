@@ -1,15 +1,16 @@
 'use client'
 
 import {createContext, useState, useContext, useEffect} from 'react';
-import boardsData from '../../data.json';
-import { Board } from '../../types/Board';
+import { Board, Column } from '../../types/Board';
 import { Dispatch, SetStateAction } from 'react';
+import { BoardContext } from './BoardContext';
 
 type BoardsContextType = {
     boards: Board[];
     setBoards: Dispatch<SetStateAction<Board[]>>;
     addBoard: (newBoard: Board) => void;
-    deleteBoard: (boardId: string) => void;
+    deleteBoard: (boardId: number) => void;
+    fetchBoards: () => void;
   };
   
   const defaultBoardsValue: BoardsContextType = {
@@ -17,6 +18,7 @@ type BoardsContextType = {
     setBoards: () => { throw new Error("setBoards function must be overridden"); },
     addBoard: () => { throw new Error("addBoard needs to be overridden")},
     deleteBoard: () => { throw new Error("deleteBoard must be overridden")},
+    fetchBoards: () => { throw new Error("deleteBoard must be overridden")},
      
   };
   
@@ -29,6 +31,7 @@ type BoardsContextType = {
 
 export const BoardsProvider: React.FC<BoardsProviderProps> = ({ children }) => {
   const [boards, setBoards] = useState<Board[]>([]);
+  const {currentBoard} = useContext(BoardContext);
 
   async function addBoard(newBoard: Board) {
     console.log("New Board:", JSON.stringify(newBoard));
@@ -49,7 +52,7 @@ export const BoardsProvider: React.FC<BoardsProviderProps> = ({ children }) => {
     }
   }
 
-async function deleteBoard(boardId: string) {
+async function deleteBoard(boardId: number) {
   console.log("Deleting Board:", boardId);
   try {
     const response = await fetch(`api/boards/${boardId}`, {
@@ -74,11 +77,7 @@ async function deleteBoard(boardId: string) {
   }
 }
 
-
-
-
-  useEffect(() => {
-    async function fetchBoards() {
+ async function fetchBoards() {
 
       try {
         const response = await fetch("/api/boards", {
@@ -95,11 +94,18 @@ async function deleteBoard(boardId: string) {
       }
     };
 
+
+  useEffect(() => {
+   
     fetchBoards();
   }, []);
 
+  useEffect( () => {
+      fetchBoards();
+  }, [currentBoard]);
+
   return (
-    <BoardsContext.Provider value={{ boards, setBoards, addBoard, deleteBoard }}>
+    <BoardsContext.Provider value={{ boards, setBoards, addBoard, deleteBoard, fetchBoards}}>
       {children}
     </BoardsContext.Provider>
   );
