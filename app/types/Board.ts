@@ -18,13 +18,16 @@ export interface Column {
 }
 
 export interface Task {
+    id: string;
+    columnId: string;
     title: string;
     description: string;
     status: string;
-    subtasks: Subtask[];
+    subtasks: Subtask[] | undefined;
 }
 
 export interface Subtask {
     title: string;
     isCompleted: boolean;
+    task: any; 
 }

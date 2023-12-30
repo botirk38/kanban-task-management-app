@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { Task, Board} from "../types/Board";
+import { Task, Board, Subtask} from "../types/Board";
 
 interface TaskOperations {
     currentBoard: Board | null;
@@ -36,6 +36,38 @@ const createTask = async( task: Task, boardId : string, columnId: string) => {
 
 }
 
+const postSubtasks =  async ( boardId: string, columnId: string, taskId: string, subtasks : Subtask[]) => {
+    console.log("Task Id : ", taskId);
+
+    try {
+
+        const response = await fetch(`api/boards/${boardId}/columns/${columnId}/tasks/${taskId}/subtasks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(subtasks)
+
+
+        });
+
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const createdSubtasks = await response.json();
+
+        return createdSubtasks;
+
+
+    } catch ( err : any) {
+        console.error("Error creating task:", err);
+    }
+
+
+}
+
+
+
 const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSelectedTask, setTaskOpen, onClose} : TaskOperations) => {
 
     const openTask = useCallback((task: Task) => {
@@ -43,17 +75,28 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
         setTaskOpen?.(true);
     }, [setSelectedTask, setTaskOpen]);
 
+
+
     const addTask = useCallback(async (newTask : Task) => {
     if (currentBoard) {
-        // Assuming you have boardId and columnId available
-        const createdTask = await createTask(newTask, currentBoard.id, newTask.columnId);
+        const taskData = { ...newTask, subtasks: undefined };
+        const createdTask = await createTask(taskData, currentBoard.id, newTask.columnId);
 
         if (createdTask) {
+
+            const updatedSubtasks = newTask.subtasks?.map(subtask => ({
+                ...subtask,
+                task: createdTask.id
+            }));
+
+            const createdSubtasks = await postSubtasks(currentBoard.id, newTask.columnId, createdTask.id, updatedSubtasks);
+            const updatedTaskWithSubtasks = { ...createdTask, subtasks: createdSubtasks };
+
             const updatedBoard = { ...currentBoard };
-            const columnIndex = currentBoard.columns.findIndex(column => column.id === createdTask.columnId);
+            const columnIndex = currentBoard.columns.findIndex(column => column.id === newTask.columnId);
 
             if (columnIndex !== -1) {
-                updatedBoard.columns[columnIndex].tasks.push(createdTask);
+                updatedBoard.columns[columnIndex].tasks.push(updatedTaskWithSubtasks);
                 setCurrentBoard(updatedBoard);
             } else {
                 console.error(`No column found with the ID ${createdTask.columnId}`);

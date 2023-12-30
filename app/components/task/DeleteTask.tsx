@@ -10,6 +10,29 @@ interface DeleteTaskProps{
     task: Task;
 }
 
+const deleteTaskAPI = async (taskID : string, boardID : string, columnID : string) => {
+    try {
+        const response = await fetch(`api/boards/${boardID}/columns/${columnID}/tasks/${taskID}`, { 
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.error('Error response:', errorResponse);
+            throw new Error('Failed to delete the task');
+        }
+
+        
+
+    } catch (error) {
+        console.error('Error deleting task:', error);
+        throw error;
+    }
+}
+
 
 const DeleteTask: React.FC<DeleteTaskProps> = ({onClose, parentClose, task}) =>{
 
@@ -19,18 +42,31 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({onClose, parentClose, task}) =>{
         onClose();
     }
 
-    const handleDeleteTask = () =>{
-        if(currentBoard){
-            const updatedBoard = {...currentBoard};
-            const colIndex = updatedBoard.columns.findIndex(column => column.name === task.status);
-            const taskIndex = updatedBoard.columns[colIndex].tasks.findIndex(t => t.title === task.title);
-            updatedBoard.columns[colIndex].tasks.splice(taskIndex, 1);
-            setCurrentBoard(updatedBoard);
-            parentClose();
-        }else{
-            console.error("No current board");
+    const handleDeleteTask = async () => {
+        if (currentBoard && task) {
+            try {
+                console.log(task)
+                await deleteTaskAPI(task.id, currentBoard.id, task.columnId);
+                const updatedBoard = { ...currentBoard };
+                const colIndex = updatedBoard.columns.findIndex(column => column.id === task.columnId);
+                if (colIndex > -1) {
+                    const taskIndex = updatedBoard.columns[colIndex].tasks.findIndex(t => t.id === task.id);
+                    if (taskIndex > -1) {
+                        updatedBoard.columns[colIndex].tasks.splice(taskIndex, 1);
+                        setCurrentBoard(updatedBoard);
+                    }
+                }
+                parentClose();
+            } catch (error) {
+                console.error("Error while deleting task:", error);
+                // Optionally, handle UI feedback for the error
+            }
+        } else {
+            console.error("No current board or task");
         }
     }
+
+
 
     
     

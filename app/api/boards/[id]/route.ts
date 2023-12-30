@@ -41,7 +41,7 @@ export async function DELETE( request: NextRequest, { params} : { params : {id :
 export async function PATCH( request: NextRequest, {params} : { params: {id : string} } ) {
  
   const data = await request.json()
-  console.log("Data:", data)
+  console.log(" Board Data:", data)
 
   const cookieStore = cookies();
   const id = params.id;

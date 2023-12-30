@@ -24,7 +24,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
         }
       
         return currentBoard.columns.findIndex(column =>
-          column.tasks.findIndex(t => t.title === task.title) !== -1
+          column.tasks.findIndex(t => t.id === task.id) !== -1
         );
       }, [currentBoard, task]);
       
@@ -33,33 +33,72 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
           return -1;
         }
       
-        return currentBoard?.columns[currentColumnIndex].tasks.findIndex(t => t.title === task.title);
+        return currentBoard?.columns[currentColumnIndex].tasks.findIndex(t => t.id === task.id);
       }, [currentBoard, currentColumnIndex, task]);
 
+      
+      const editTaskApi = async (boardId: string, columnId: string, taskId: string, updatedTask: Task) => {
+        try {
 
-      const editTask = useCallback((updatedTask: Task) => {
-        if (currentBoard && currentColumnIndex !== -1 && currentTaskIndex !== -1) {
-          const updatedBoard = { ...currentBoard };
-      
-          // If the task's status has changed, move it to the appropriate column
-          if (task.status !== updatedTask.status) {
-            // Remove the task from its current position
-            updatedBoard.columns[currentColumnIndex].tasks.splice(currentTaskIndex ?? - 1, 1, updatedTask);
-      
-            // Find the column index where the task should be placed after the update
-            const newColumnIndex = updatedBoard.columns.findIndex(column => column.name === updatedTask.status);
-      
-            // Add the task to the new column
-            updatedBoard.columns[newColumnIndex].tasks.push(updatedTask);
-          } else {
-            // Update the task in its current position
-            updatedBoard.columns[currentColumnIndex].tasks[currentTaskIndex ?? - 1] = updatedTask;
-          }
-      
-          setCurrentBoard(updatedBoard);
-          onClose();
+            const subtasksWithTaskId = updatedTask.subtasks?.map(subtask => ({
+              ...subtask,
+              task: taskId              
+            }));
+
+            const taskData = { ...updatedTask, subtasks: subtasksWithTaskId };
+            console.log(taskData);
+
+            const response = await fetch(`api/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(taskData)
+            });
+
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                throw new Error(`API error: ${errorResponse.message || 'Failed to update the task'}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error updating task:', error);
+            throw error;
         }
-      }, [currentBoard, currentColumnIndex, currentTaskIndex, task, setCurrentBoard, onClose]);
+    };
+
+ 
+
+  const editTask = useCallback(async (updatedTask: Task) => {
+    if (currentBoard && currentColumnIndex !== -1 && currentTaskIndex !== -1) {
+        try {
+            // Await the completion of the task update API call
+            const updatedTaskResponse = await editTaskApi(currentBoard.id, updatedTask.columnId, updatedTask.id, updatedTask);
+            console.log(updatedTaskResponse);
+
+            // Update the local state with the response from the server
+            const updatedBoard = { ...currentBoard };
+
+            // Update or move the task based on its updated status
+            if (task.status !== updatedTaskResponse.status) {
+                // Remove the task from its current position
+                updatedBoard.columns[currentColumnIndex].tasks.splice(currentTaskIndex ?? -1, 1);
+                // Find the new column index and add the updated task
+                const newColumnIndex = updatedBoard.columns.findIndex(column => column.name === updatedTaskResponse.status);
+                updatedBoard.columns[newColumnIndex].tasks.push(updatedTaskResponse);
+            } else {
+                // Update the task in its current position
+                updatedBoard.columns[currentColumnIndex].tasks[currentTaskIndex ?? -1] = updatedTaskResponse;
+            }
+
+            setCurrentBoard(updatedBoard);
+            onClose();
+        } catch (error) {
+            console.error('Error while updating task:', error);
+            // Optionally, show error message to the user
+        }
+    }
+}, [currentBoard, currentColumnIndex, currentTaskIndex, task, setCurrentBoard, onClose]);
+
     
     
 

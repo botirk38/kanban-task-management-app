@@ -2,6 +2,8 @@ import React from "react";
 import { ButtonAddTask } from "../buttons/ButtonAddTask";
 import Image from "next/image";
 import { Action, State } from "../task/CreateTask";
+import { Column} from "@/app/types/Board";
+
 
 interface TaskFormProps {
     state: State;
@@ -10,9 +12,10 @@ interface TaskFormProps {
     onSubmit: (event: React.FormEvent<HTMLButtonElement>) => void;
     title: string;
     onStatusChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    columns: Column[]
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onSubmit, title }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onSubmit, title, columns}) => {
     return (
       <div className="absolute lg:right-60 flex flex-col dark:bg-blue-mid bg-white gap-4 rounded max-h-[calc(100vh-2rem)] overflow-y-auto p-8 w-[23rem]" onClick={e => e.stopPropagation()}>
         {/* Title Input */}
@@ -73,7 +76,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
           <p className="dark:text-white font-bold text-sm text-blue-grayish">Status</p>
           <select
             value={state.status}
-            onChange={e => dispatch({ type: "SET_STATUS", payload: e.target.value })}
+            onChange={e => dispatch({ type: "SET_STATUS", payload : {status : e.target.value, columns : columns}})}
             className="dark:bg-blue-mid border border-blue-grayish p-2 rounded-md w-full dark:text-white"
           >
             {statuses.map((status, index) => (

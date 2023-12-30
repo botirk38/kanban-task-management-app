@@ -20,13 +20,14 @@ export type State = {
     status: string;
     subtasks: Subtask[];
     columnId: string;
+    id: string;
 
 }
 
 export type Action =
     | { type: 'SET_TITLE', payload: string }
     | { type: 'SET_DESCRIPTION', payload: string }
-    | { type: 'SET_STATUS', payload: string, columns: Column[] }
+    | { type: 'SET_STATUS', payload: { status: string, columns: Column[] } }
     | { type: 'ADD_SUBTASK', payload: Subtask }
     | { type: 'DELETE_SUBTASK', payload: number }
     | { type: 'TOGGLE_SUBTASK_COMPLETED', payload: number }
@@ -40,13 +41,13 @@ export const reducer = (state: State, action: Action): State => {
         case 'SET_DESCRIPTION':
             return { ...state, description: action.payload };
         case 'SET_STATUS':
-            const newStatus = action.payload;
-            const columnMatch = columns.find( (column : Column) => column.name === newStatus)
+            const { status, columns } = action.payload;
+            const columnMatch = columns.find( (column) => column.name === status)
             const newColumnId = columnMatch ? columnMatch.id : state.columnId;
             return { 
                 ...state, 
-                status: newStatus,
-                columnId: newColumnId // Update columnId when status changes
+                status: status,
+                columnId: newColumnId
     }; 
         case 'ADD_SUBTASK':
             return { ...state, subtasks: [...state.subtasks, action.payload] };
@@ -93,7 +94,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
         description: '',
         status: statuses[0],
         subtasks: [],
-        columnId: '' 
+        columnId: columns ? columns[0].id : '' ,
+        id: ''
     });
 
     const {addTask} = useTaskOperations({ currentBoard, setCurrentBoard, onClose });
@@ -119,6 +121,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
                     addTask(state);      
                 }}
                 title="Create Task" 
+                columns={columns}
             />
         </section>
     );

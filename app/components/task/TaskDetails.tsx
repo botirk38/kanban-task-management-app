@@ -83,7 +83,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChan
             {modalMenuOpen && taskFromContext && 
             <ModalMenu 
             onClose={onClose}  
-            task={{title:taskFromContext.title, description: taskFromContext.description, status:taskFromContext.status, subtasks: taskFromContext.subtasks}}  
+            task={{title:taskFromContext.title, description: taskFromContext.description, status:taskFromContext.status, subtasks: taskFromContext.subtasks ,id: taskFromContext.id , columnId: taskFromContext.columnId}}  
             onStatusChange={onStatusChange}
             actionType = "Task"
             />}

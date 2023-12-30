@@ -6,23 +6,27 @@ import { NextRequest } from "next/server";
 export async function POST(request : NextRequest, { params } :  { params : { id : string, columnId: string } }) {
 	
 	const cookieStore = cookies();
-	const sessionId = cookieStore.get('sessionid')
-	const csrfToken = cookieStore.get('csrftoken')
-
+	const sessionId = cookieStore.get('sessionid')?.value
+	const csrfToken = cookieStore.get('csrftoken')?.value
+	
 	const boardId = params.id;
 	const colId = params.columnId
 
 
 	const req_data = await request.json();
-
+	console.log("Task Data:", req_data)
+	console.log('Session ID: ', sessionId)
+	console.log('csrftoken: ', csrfToken)
 
 	try {
 		const response =  await fetch(`http://127.0.0.1:8000/boards/${boardId}/columns/${colId}/tasks/`, {	
-			headers: {
-				'Content-Type': 'application/json',
-				'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
-        			'X-CSRFToken': csrfToken,
-			},
+
+			method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
+					'X-CSRFToken': csrfToken,
+				},
 
 			body: JSON.stringify(req_data)
 		});
@@ -31,12 +35,15 @@ export async function POST(request : NextRequest, { params } :  { params : { id 
 
 		
 		if (!response.ok){
+			      console.error("Response Error: ", response_data)
 			      return new Response(JSON.stringify({ error: response_data }), { status: response.status });
-			}
+		}
 		return new Response(JSON.stringify(response_data), { status: 200 });
 
 	} catch (err : any) {
+		console.error(err)
 		return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+		
 
 	}
 

@@ -5,13 +5,14 @@ from rest_framework.response import Response
 from .models import Board, Column, Task, Subtask
 from .serializers import BoardSerializer, ColumnSerializer, TaskSerializer, SubtaskSerializer
 from rest_framework.exceptions import NotFound
+import logging
+logger = logging.getLogger(__name__)
 
 import logging
 
 logger = logging.getLogger(__name__)
 
 class BoardViewSet(viewsets.ModelViewSet):
-    
 
 
     queryset = Board.objects.all()
@@ -30,6 +31,17 @@ class BoardViewSet(viewsets.ModelViewSet):
         else:
             logger.debug(f"Board creation failed: {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+    def update(self, request, *args, **kwargs):
+        logger.info(f"Incoming PATCH data: {request.data}")
+
+        board_instance = self.get_object()
+        serializer = self.get_serializer(board_instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -125,6 +137,42 @@ class SubtaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Subtask.objects.all()
     serializer_class = SubtaskSerializer
+
+    def create(self, request, *args, **kwargs):
+        subtasks_data = request.data
+        if not isinstance(subtasks_data, list):
+            return Response({'error': 'Expected a list of subtasks'}, status=status.HTTP_400_BAD_REQUEST)
+
+        created_subtasks = []
+        for subtask_data in subtasks_data:
+            serializer = self.get_serializer(data=subtask_data)
+            if serializer.is_valid():
+                serializer.save()
+                created_subtasks.append(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(created_subtasks, status=status.HTTP_201_CREATED)
+
+    def update(self, request, *args, **kwargs):
+        # Retrieve the subtask being updated
+        subtask = self.get_object()
+
+        task_id = kwargs.get('task_id')
+        try:
+            task = Task.objects.get(id=task_id)
+        except Task.DoesNotExist:
+            return Response({'detail': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Update the subtask
+        serializer = self.get_serializer(subtask, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 

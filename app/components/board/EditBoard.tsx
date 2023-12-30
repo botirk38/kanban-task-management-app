@@ -15,7 +15,6 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
         boardColumns: currentBoard?.columns.map(column => column.name) || []
     };
     const [state, dispatch] = useReducer(boardReducer, initialState);
-    const [originalColumns, setOriginalColumns] = useState(initialState.boardColumns);
 
     const editBoard = () => {
         if (currentBoard) {
@@ -54,6 +53,7 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
             throw new Error('Failed to update board');
         }
         return await response.json();
+
     } catch (error) {
         console.error('Error updating board:', error);
         
@@ -64,7 +64,9 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const modifiedBoard = editBoard();
+        console.log("Modified Board: ", modifiedBoard);
         const updatedBoard = await updateBoard(modifiedBoard)
+        console.log("Updated Board: ", updateBoard);
         setCurrentBoard(updatedBoard)
         onClose();
     }

@@ -23,16 +23,11 @@ const Dashboard = () => {
     const statuses = Array.from(new Set(currentBoard?.columns.flatMap(column => column.name)));
     const currentBoardWithIcons = useColumnIcons(currentBoard && currentBoard.columns ? currentBoard : boards[0]);
     
-    useEffect( () => {
-        console.log(currentBoard)
-    }, [currentBoard])
-
     const [addTaskClicked, setAddTaskClicked] = useState(false);
     const [modalMenuClicked, setModalMenuClicked] = useState(false);
     const [addColumn, setAddColumn] = useState(false);
     
 
-    console.log(currentBoardWithIcons)
     const { openTask, handleStatusChange, toggleSubtaskCompleted } = useTaskOperations({
         currentBoard,
         setCurrentBoard,

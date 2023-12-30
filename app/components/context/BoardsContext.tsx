@@ -52,7 +52,7 @@ export const BoardsProvider: React.FC<BoardsProviderProps> = ({ children }) => {
     }
   }
 
-async function deleteBoard(boardId: number) {
+async function deleteBoard(boardId: string) {
   console.log("Deleting Board:", boardId);
   try {
     const response = await fetch(`api/boards/${boardId}`, {
