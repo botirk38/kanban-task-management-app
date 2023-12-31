@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         'Cookie': `sessionid=${sessionID}; csrftoken=${csrfToken}`, 
         'X-CSRFToken': csrfToken,      
       },
-      body: data
+      body: JSON.stringify(data)
     });
 
     const response_data = await response.json();

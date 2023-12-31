@@ -1,7 +1,7 @@
 'use client'
 
 import {createContext, useState, useContext, useEffect} from 'react';
-import { Board, Column } from '../../types/Board';
+import { Board} from '../../types/Board';
 import { Dispatch, SetStateAction } from 'react';
 import { BoardContext } from './BoardContext';
 
@@ -9,7 +9,7 @@ type BoardsContextType = {
     boards: Board[];
     setBoards: Dispatch<SetStateAction<Board[]>>;
     addBoard: (newBoard: Board) => void;
-    deleteBoard: (boardId: number) => void;
+    deleteBoard: (boardId: string) => void;
     fetchBoards: () => void;
   };
   

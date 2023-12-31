@@ -23,8 +23,9 @@ export default function RootLayout({
       <BoardProvider>
           <BoardsProvider>
             <html lang="en">
-              <body className={`${inter.className}  w-full min-h-screen`}>{children}</body>
+              <body className={`${inter.className}  w-full min-h-screen overflow-y-hidden overflow-x-visible`}>{children}</body>
             </html>
+
            </BoardsProvider>
       </BoardProvider>
   </ThemeProvider>

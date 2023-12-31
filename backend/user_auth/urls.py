@@ -1,4 +1,4 @@
-from .views import UserProfileView, LoginView, RegisterView, LogoutView, CheckSessionView
+from .views import UserProfileView, LoginView, RegisterView, LogoutView, CheckSessionView,DeleteAccountView
 from django.urls import path
 
 
@@ -8,4 +8,5 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('check-session/', CheckSessionView.as_view(), name="check-session"),
+    path('delete_account/', DeleteAccountView.as_view(), name='delete_account'),
 ]

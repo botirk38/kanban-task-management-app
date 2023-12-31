@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import CreateBoard from "../board/CreateBoard";
 import ModalMenu from "../menus/ModalMenu";
 import CreateTask from "../task/CreateTask";
@@ -20,6 +21,7 @@ export interface NavigationProps {
     currentBoard: any;
     boards: any;
     statuses: string[];
+    setModalMenuOpen: (state: boolean) => void;
 }
 
 
@@ -35,8 +37,12 @@ const MobileNavigation: React.FC<NavigationProps> = ({
     modalMenuOpen,
     currentBoard,
     boards,
-    statuses
+    statuses,
+    setModalMenuOpen
 }) => {
+
+    
+
 
     return(
     <header className="container flex  justify-start items-center p-3 dark:bg-blue-mid w-full dark:text-white">
@@ -46,19 +52,21 @@ const MobileNavigation: React.FC<NavigationProps> = ({
 
             <HeaderControls handleAddNewTaskClick={handleAddNewTaskClick} handleModalMenuClick={handleModalMenuClick}/> 
         
-
+            
             {AddNewTaskOpen && (
                 <CreateTask onClose={handleAddNewTaskClick} statuses={statuses}/>
             )
                 }
 
             {modalMenuOpen && 
-                <ModalMenu actionType='Board'/>
+                <ModalMenu actionType='Board' onClose={() => setModalMenuOpen(false) }/>
             }
             {createNewBoardOpen && (
                 <CreateBoard onClose={handleCreateNewBoardClick}/>
             )
                 }
+
+            <Toaster/>
 
      
         </header>

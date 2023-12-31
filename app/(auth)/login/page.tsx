@@ -50,18 +50,11 @@ export default function LoginPage(){
 
     const data = await response.json()
     
-    if (!response.ok) {
-    let errorMsg = [];
-    if (data.error && data.error.email) {
-      errorMsg.push(data.error.email[0]); // Assuming the error message is in an array
-    }
-    if (data.error && data.error.username) {
-      errorMsg.push(data.error.username[0]); // Assuming the error message is in an array
-    }
+    if (!response.ok) { 
     toast({
       title: "Login Status: ",
-      description: errorMsg.join(" "), // Combines messages with a space
-    });
+      description: 'Login failed check your username and password'   
+      });
   } else {
     console.log("Logged in successfully")
     toast({

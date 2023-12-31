@@ -5,10 +5,12 @@ import { Task } from '../../types/Board';
 
 import EditTask from '../task/EditTask';
 import DeleteTask from '../task/DeleteTask';
+import { lazy } from 'react';
 
 import EditBoard from '../board/EditBoard';
 import DeleteBoard from '../board/DeleteBoard';
-import UserProfile from '../forms/UserProfile';
+const UserProfile = lazy(() => import('../forms/UserProfile'));
+
 
 interface EditTaskProps {
     onClose: () => void;

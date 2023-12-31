@@ -7,6 +7,7 @@ from .serializers import UserSerializer
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 import logging
+from rest_framework.permissions import IsAuthenticated
 
 logger = logging.getLogger(__name__)
 
@@ -83,3 +84,16 @@ class CheckSessionView(views.APIView):
 
         else:
             return Response( {'isLoggedIn' : False } , status= status.HTTP_200_OK)
+
+class DeleteAccountView(views.APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+
+        try :
+            user.delete();
+            return Response({"message": "User account has been deleted."}, status=status.HTTP_200_OK)
+
+        except:
+            return Response({"error": "User account could not be deleted."}, status=status.HTTP_400_BAD_BAD_REQUEST)
