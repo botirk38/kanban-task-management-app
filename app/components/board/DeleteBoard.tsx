@@ -23,7 +23,7 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose}) => {
         if (currentBoard && currentBoard.id){
            
             deleteBoard(currentBoard.id)
-            setCurrentBoard(boards[0]);
+            setCurrentBoard(boards[0] ? boards[0] : null);
             console.log(currentBoard);
             onClose();
         }

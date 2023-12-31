@@ -8,14 +8,14 @@ import { BoardsContext } from '../context/BoardsContext';
 
 interface TaskDetailsProps {
     
-    title: string;
+    id: string;
     statuses: string[];
     onStatusChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     toggleSubtaskCompleted: (index: number) => void;
     onClose: () => void;
 }
 
-const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChange, toggleSubtaskCompleted, onClose}) => {
+const TaskDetails: React.FC<TaskDetailsProps> = ({ id, statuses, onStatusChange, toggleSubtaskCompleted, onClose}) => {
     
     const {currentBoard, setCurrentBoard} = useContext(BoardContext);
     const {boards} = useContext(BoardsContext);
@@ -30,11 +30,11 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChan
 
     const taskFromContext = useMemo(() => {
         for (const column of currentBoard?.columns || boards[0].columns) {
-            const task = column.tasks.find(t => t.title === title);
+            const task = column.tasks.find(t => t.id === id);
             if (task) return task;
         }
         return null;
-    }, [currentBoard, title, boards]);
+    }, [currentBoard, id, boards]);
 
     const handleModalMenuClick = useCallback(() => {
         setModalMenuOpen(prevState => !prevState);
@@ -54,10 +54,10 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ title, statuses, onStatusChan
                     </picture>
                 </div>
                 <p className='text-blue-gray-light mb-4 dark:text-blue-grayish '>{taskFromContext?.description}</p>
-                <h3 className='text-blue-gray-light mb-2 font-bold dark:text-white'>Subtasks ({taskFromContext?.subtasks.filter(st => st.isCompleted === true).length} of {taskFromContext?.subtasks.length})</h3>
+                <h3 className='text-blue-gray-light mb-2 font-bold dark:text-white'>Subtasks ({taskFromContext?.subtasks?.filter(st => st.isCompleted === true).length} of {taskFromContext?.subtasks?.length})</h3>
 
                 <ul>
-                    {taskFromContext?.subtasks.map((subtask, index) => (
+                    {taskFromContext?.subtasks?.map((subtask, index) => (
                         <div key={index} className=' relative dark:bg-blue-dark flex justify-start items-center gap-4 mb-4 bg-blue-pale p-5 rounded-lg'>
                             <input 
                                 className={`appearance-none p-3 ${subtask.isCompleted ? "bg-purple-dark" : 'bg-white dark:bg-blue-gray'}`} 

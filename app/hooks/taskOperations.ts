@@ -87,6 +87,7 @@ const useTaskOperations = ({currentBoard, setCurrentBoard, selectedTask, setSele
             const updatedSubtasks = newTask.subtasks?.map(subtask => ({
                 ...subtask,
                 task: createdTask.id
+
             }));
 
             const createdSubtasks = await postSubtasks(currentBoard.id, newTask.columnId, createdTask.id, updatedSubtasks);
