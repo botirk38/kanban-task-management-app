@@ -20,6 +20,7 @@ import {useRouter} from "next/navigation";
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/components/ui/use-toast"
 import Link from "next/link"
+import { useEffect } from "react"
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -73,6 +74,23 @@ export default function LoginPage(){
     
   }
 
+  useEffect( () => {
+    async function checkSession() {
+      
+      const response = await fetch('api/check-session', {
+        method: 'GET',
+      });
+
+      const data = await response.json();
+
+      if (data.isLoggedIn) {
+          router.push('/dashboard');
+      }
+
+    }
+    checkSession();
+
+  }, [router] );
 
   return(
     <>

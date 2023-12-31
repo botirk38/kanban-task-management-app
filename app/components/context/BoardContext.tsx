@@ -7,8 +7,8 @@ import { Board } from '../../types/Board';
 
 
 type BoardContextType = {
-    currentBoard: Board | null;
-    setCurrentBoard: React.Dispatch<React.SetStateAction<Board | null>>;
+    currentBoard: Board | null | undefined;
+    setCurrentBoard: React.Dispatch<React.SetStateAction<Board | null | undefined>>;
   };
   
 export const BoardContext = createContext<BoardContextType>({
@@ -22,7 +22,7 @@ type BoardProviderProps = {
 };
 
 export const BoardProvider: FC<BoardProviderProps> = ({children}) => {
-    const [currentBoard, setCurrentBoard] = useState<Board | null>(null);
+    const [currentBoard, setCurrentBoard] = useState<Board | null | undefined>(null);
     
     
     return (

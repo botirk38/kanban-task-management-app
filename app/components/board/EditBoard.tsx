@@ -1,13 +1,14 @@
 import BoardForm from "../forms/BoardForm";
 import { boardReducer } from "./CreateBoard";
-import React, { useContext, useReducer, useState } from "react";
+import React, { useContext, useReducer} from "react";
 import { BoardContext } from "../context/BoardContext";
 import { Board } from "@/app/types/Board";
 interface EditBoardProps  {
     onClose: () => void;
+    parentClose?: () => void;
 }
 
-const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
+const EditBoard: React.FC<EditBoardProps> = ({ onClose, parentClose }) => {
     const { currentBoard, setCurrentBoard } = useContext(BoardContext);
 
     const initialState = {
@@ -69,6 +70,7 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose }) => {
         console.log("Updated Board: ", updateBoard);
         setCurrentBoard(updatedBoard)
         onClose();
+        parentClose ? parentClose() : null;
     }
 
     return (

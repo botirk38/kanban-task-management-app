@@ -39,6 +39,8 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ id, statuses, onStatusChange,
     const handleModalMenuClick = useCallback(() => {
         setModalMenuOpen(prevState => !prevState);
     }, []);
+
+
     
     
 
@@ -62,8 +64,8 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ id, statuses, onStatusChange,
                             <input 
                                 className={`appearance-none p-3 ${subtask.isCompleted ? "bg-purple-dark" : 'bg-white dark:bg-blue-gray'}`} 
                                 type='checkbox' 
-                                checked={subtask.isCompleted} 
-                                onChange={() => toggleSubtaskCompleted(index)}
+                                checked={subtask.isCompleted || false} 
+                                onChange={() => toggleSubtaskCompleted(index)}                                
                             />
                             {subtask.isCompleted && (
                                 <Image src="/assets/icon-check.svg" alt="subtask completed" width={20} height={20} className=' absolute top-1/2 left-70 transform-translate-x-56 -translate-y-1/2 ' onClick={ () => toggleSubtaskCompleted(index)} />

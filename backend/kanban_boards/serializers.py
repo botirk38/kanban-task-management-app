@@ -5,20 +5,21 @@ logger = logging.getLogger(__name__)
 
 
 class SubtaskSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(required=False)  
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = Subtask
         fields = ['id', 'title', 'is_completed', 'task']
 
 
-
 class TaskSerializer(serializers.ModelSerializer):
     subtasks = SubtaskSerializer(many=True, required=False)
     columnId = serializers.ReadOnlyField(source='column.id')
+
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'subtasks', 'status', 'columnId']
+        fields = ['id', 'title', 'description',
+                  'subtasks', 'status', 'columnId']
 
     def _set_column_from_status(self, task, status_name):
         try:
@@ -26,7 +27,8 @@ class TaskSerializer(serializers.ModelSerializer):
             task.column = column
             task.status = status_name
         except Column.DoesNotExist:
-            raise serializers.ValidationError({'status': 'Invalid status name, no corresponding column found'})
+            raise serializers.ValidationError(
+                {'status': 'Invalid status name, no corresponding column found'})
 
     def create(self, validated_data):
         subtasks_data = validated_data.pop('subtasks', [])
@@ -40,19 +42,26 @@ class TaskSerializer(serializers.ModelSerializer):
         for subtask_data in subtasks_data:
             Subtask.objects.create(task=task, **subtask_data)
         return task
-    
 
     def update(self, instance, validated_data):
+
+        status_name = validated_data.get('status')
+
+        if status_name and status_name != instance.status:
+            self._set_column_from_status(instance, status_name)
+
         # Pop subtasks data from validated_data
         subtasks_data = validated_data.pop('subtasks', [])
         instance = super(TaskSerializer, self).update(instance, validated_data)
-        
+
+
         for subtask_data in subtasks_data:
             subtask_id = subtask_data.get('id', None)
 
             if subtask_id:
                 # Update existing subtask
-                subtask_instance = Subtask.objects.get(id=subtask_id, task=instance)
+                subtask_instance = Subtask.objects.get(
+                    id=subtask_id, task=instance)
                 # Update fields in subtask_instance from subtask_data
                 # ...
                 subtask_instance.save()
@@ -60,16 +69,14 @@ class TaskSerializer(serializers.ModelSerializer):
                 # Create new subtask - Ensure 'task' is not included in subtask_data
                 if 'task' in subtask_data:
                     subtask_data.pop('task')
-                Subtask.objects.create(task=instance, **subtask_data) 
+                Subtask.objects.create(task=instance, **subtask_data)
 
         return instance
-        
-    
+
 
 class ColumnSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
     id = serializers.IntegerField(required=False)
-
 
     class Meta:
         model = Column
@@ -84,7 +91,7 @@ class ColumnSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         tasks_data = validated_data.pop('tasks', [])
-        
+
         # Update the column instance
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -101,7 +108,8 @@ class ColumnSerializer(serializers.ModelSerializer):
             else:
                 Task.objects.create(column=instance, **task_data)
 
-        return instance 
+        return instance
+
 
 class BoardSerializer(serializers.ModelSerializer):
     columns = ColumnSerializer(many=True, required=False)
@@ -119,7 +127,6 @@ class BoardSerializer(serializers.ModelSerializer):
         for column_data in columns_data:
             Column.objects.create(board=board, **column_data)
 
-
         return board
 
     def update(self, instance, validated_data):
@@ -131,17 +138,14 @@ class BoardSerializer(serializers.ModelSerializer):
             column_id = column_data.get('id')
             if column_id:
                 # Only update if an ID is present
-                column_instance = Column.objects.filter(id=column_id, board=instance).first()
+                column_instance = Column.objects.filter(
+                    id=column_id, board=instance).first()
                 if column_instance:
                     ColumnSerializer().update(column_instance, column_data)
 
             else:
                 column_name = column_data.get('name')
                 if column_name:
-                    Column.objects.create(board=instance, name= column_name)
+                    Column.objects.create(board=instance, name=column_name)
 
-
-        return instance 
-
-
-    
+        return instance

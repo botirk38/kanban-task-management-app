@@ -19,6 +19,7 @@ interface EditTaskProps {
 
 interface EditBoardProps {
     actionType: 'Board';
+    onClose?: () => void;
 }
 
 type ModalMenuProps = EditTaskProps | EditBoardProps;
@@ -26,6 +27,8 @@ type ModalMenuProps = EditTaskProps | EditBoardProps;
 const ModalMenu: React.FC<ModalMenuProps> = (props) => {
     const [editTaskOpen, setEditTaskOpen] = useState(false);
     const [deleteTaskOpen, setDeleteTaskOpen] = useState(false);
+
+    console.log(props.onClose);
 
 
 
@@ -52,8 +55,8 @@ const ModalMenu: React.FC<ModalMenuProps> = (props) => {
             {props.actionType === 'Task' && editTaskOpen && <EditTask onClose={handleEditTaskClick} task={props.task} onStatusChange={props.onStatusChange} />}
             {props.actionType === 'Task' && deleteTaskOpen && <DeleteTask onClose={handleDeleteTaskClick} parentClose={props.onClose} task={props.task} />}
 
-            {props.actionType === 'Board' && editTaskOpen &&  <EditBoard onClose={handleEditTaskClick}/>}
-            {props.actionType === 'Board' && deleteTaskOpen && <DeleteBoard onClose={handleDeleteTaskClick}   />}
+            {props.actionType === 'Board' && editTaskOpen &&  <EditBoard onClose={handleEditTaskClick} parentClose={props.onClose} /> } 
+            {props.actionType === 'Board' && deleteTaskOpen && <DeleteBoard onClose={handleDeleteTaskClick} parentClose={props.onClose}  />}
 
             
         </section>

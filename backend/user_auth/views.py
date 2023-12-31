@@ -15,7 +15,7 @@ class UserProfileView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        user_profile, _ = UserProfile.objects.get_or_create(user = request.user)
+        user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
         serializer = UserProfileSerializer(user_profile, data=request.data)
 
         if serializer.is_valid():
@@ -29,7 +29,7 @@ class UserProfileView(views.APIView):
         user_profile = get_object_or_404(UserProfile, user=request.user)
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data)
-    
+
     def patch(self, request, *args, **kwargs):
         user_profile = get_object_or_404(UserProfile, user=request.user)
         serializer = UserProfileSerializer(user_profile, data=request.data)
@@ -58,6 +58,7 @@ class LoginView(views.APIView):
         login(request, user)
         return Response({'message': 'User logged in successfully'})
 
+
 class RegisterView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
@@ -71,3 +72,14 @@ class LogoutView(views.APIView):
     def post(self, request, *args, **kwargs):
         logout(self.request)
         return Response({'message': 'User logged out successfuly'})
+
+class CheckSessionView(views.APIView):
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        if user.is_authenticated:
+            return Response( {'isLoggedIn' : True} , status=status.HTTP_200_OK)
+
+        else:
+            return Response( {'isLoggedIn' : False } , status= status.HTTP_200_OK)
