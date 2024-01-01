@@ -26,7 +26,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 			headers: {
 				'Content-Type': 'application/json',
 				'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
-				'X-CSRFToken': csrfToken
+				'X-CSRFToken': csrfToken,
+				'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
 			},
 
 			body: JSON.stringify(subtask)

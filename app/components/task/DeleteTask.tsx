@@ -46,7 +46,7 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({onClose, parentClose, task}) =>{
         if (currentBoard && task) {
             try {
                 console.log(task)
-                await deleteTaskAPI(task.id, currentBoard.id, task.columnId);
+                await deleteTaskAPI(task.id!, currentBoard.id!, task.columnId!);
                 const updatedBoard = { ...currentBoard };
                 const colIndex = updatedBoard.columns.findIndex(column => column.id === task.columnId);
                 if (colIndex > -1) {

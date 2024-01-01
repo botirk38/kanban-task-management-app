@@ -23,6 +23,7 @@ export async function DELETE(request: Request, { params  }: { params: { id: stri
 				'Content-Type': 'application/json',
 				'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
 				'X-CSRFToken': csrfToken,
+				'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
 			},
 		});
 
@@ -64,7 +65,8 @@ export async function PUT(request: Request, { params }: { params: { id: string, 
 			headers: {
 				'Content-Type': 'application/json',
 				'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
-				'X-CSRFToken': csrfToken
+				'X-CSRFToken': csrfToken,
+				'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
 			},
 			body: JSON.stringify(updatedTask)
 
@@ -73,6 +75,8 @@ export async function PUT(request: Request, { params }: { params: { id: string, 
 
 
 		const response_data = await response.json();
+
+		
 
 
 		if (!response.ok) {
@@ -84,7 +88,7 @@ export async function PUT(request: Request, { params }: { params: { id: string, 
 
 	} catch (err: any) {
 		console.error(err)
-		return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+		return new Response(JSON.stringify({ error: err }), { status: 500 });
 
 	}
 }
@@ -113,7 +117,9 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 			headers: {
 				'Content-Type': 'application/json',
 				'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
-				'X-CSRFToken': csrfToken
+				'X-CSRFToken': csrfToken,
+				'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
+
 			},
 			body: JSON.stringify(updatedTask)
 

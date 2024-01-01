@@ -14,7 +14,7 @@ export async function POST(request : NextRequest, { params } :  { params : { id 
 
 
 	const req_data = await request.json();
-	console.log("Task Data:", req_data)
+	console.log("Task Data:", JSON.stringify(req_data))
 	console.log('Session ID: ', sessionId)
 	console.log('csrftoken: ', csrfToken)
 
@@ -25,19 +25,22 @@ export async function POST(request : NextRequest, { params } :  { params : { id 
 			return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
 		  }
 		  
-		const response =  await fetch(`https://kanban-a092a99fbf97.herokuapp.com/${boardId}/columns/${colId}/tasks/`, {	
+		const response =  await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/`, {	
 
 			method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
 					'X-CSRFToken': csrfToken,
+					'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app',
 				},
 
 			body: JSON.stringify(req_data)
 		});
 		
 		const response_data = await response.json();
+
+		
 
 		
 		if (!response.ok){
@@ -47,8 +50,8 @@ export async function POST(request : NextRequest, { params } :  { params : { id 
 		return new Response(JSON.stringify(response_data), { status: 200 });
 
 	} catch (err : any) {
-		console.error(err)
-		return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+		console.error(err.message)
+		return new Response(JSON.stringify({ error: err}), { status: 500 });
 		
 
 	}

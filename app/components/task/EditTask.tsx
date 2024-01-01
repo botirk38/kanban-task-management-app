@@ -72,8 +72,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
     if (currentBoard && currentColumnIndex !== -1 && currentTaskIndex !== -1) {
         try {
             // Await the completion of the task update API call
-            const updatedTaskResponse = await editTaskApi(currentBoard.id, updatedTask.columnId, updatedTask.id, updatedTask);
-            console.log(updatedTaskResponse);
+            const updatedTaskResponse = await editTaskApi(currentBoard.id!, updatedTask.columnId!, updatedTask.id!, updatedTask);
 
             // Update the local state with the response from the server
             const updatedBoard = { ...currentBoard };
@@ -87,16 +86,15 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
                 updatedBoard.columns[newColumnIndex].tasks?.push(updatedTaskResponse);
             } else {
                 // Update the task in its current position
-                if (updatedBoard.columns[currentColumnIndex].tasks) {
-                    updatedBoard.columns[currentColumnIndex].tasks?.push(updatedTaskResponse);
-                }
+                    updatedBoard.columns[currentColumnIndex].tasks![currentTaskIndex!] = updatedTaskResponse
+                
             }
 
-            setCurrentBoard(updatedBoard);
             onClose();
+            setCurrentBoard(updatedBoard);
+
         } catch (error) {
             console.error('Error while updating task:', error);
-            // Optionally, show error message to the user
         }
     }
 }, [currentBoard, currentColumnIndex, currentTaskIndex, task, setCurrentBoard, onClose]);
@@ -112,7 +110,6 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
                 dispatch={dispatch}
                 statuses={statuses}
                 onSubmit={(e) => {
-                    e.preventDefault();
                     editTask(state);
                 } }
                 title="Edit Task"

@@ -136,7 +136,7 @@ const Dashboard = () => {
 
 
             {taskOpen && selectedTask && <TaskDetails
-                id={selectedTask.id}
+                id={selectedTask.id!}
                 statuses={statuses}
                 onStatusChange={handleStatusChange}
                 toggleSubtaskCompleted={toggleSubtaskCompleted}

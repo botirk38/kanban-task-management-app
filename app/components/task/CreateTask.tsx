@@ -94,6 +94,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
         description: '',
         status: statuses[0],
         subtasks: [],
+        columnId: columns! ? columns[0].id! : 0 ,
        
     });
 
