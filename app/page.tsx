@@ -5,7 +5,7 @@ import Hero from "./components/landing/Hero"
 
 const Page = () => {
     return (
-        <main className="flex flex-col justify-start items-center py-20 px-10 min-h-screen ">
+        <main className="flex flex-col justify-start items-center py-40 px-10 min-h-screen gap-40">
             <Hero />
             <Image
                 src="/assets/landing-image.png"

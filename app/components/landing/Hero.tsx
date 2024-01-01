@@ -24,11 +24,11 @@ const Hero = () => {
 
 
                 {!loginClicked ? (
-                    <Button onClick={handleClick}>
+                    <Button onClick={handleClick} className="h-12 w-60">
                         <Mail className="mr-2 h-4 w-4" /> Login with Email
                     </Button>
                 ) : (
-                    <Button disabled>
+                    <Button disabled className="h-12 w-60">
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Please wait
                     </Button>
