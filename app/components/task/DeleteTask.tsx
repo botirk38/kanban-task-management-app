@@ -10,7 +10,7 @@ interface DeleteTaskProps{
     task: Task;
 }
 
-const deleteTaskAPI = async (taskID : string, boardID : string, columnID : string) => {
+const deleteTaskAPI = async (taskID : number, boardID : number, columnID : number) => {
     try {
         const response = await fetch(`api/boards/${boardID}/columns/${columnID}/tasks/${taskID}`, { 
             method: 'DELETE',

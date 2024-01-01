@@ -8,7 +8,7 @@ import { BoardsContext } from '../context/BoardsContext';
 
 interface TaskDetailsProps {
     
-    id: string;
+    id: number;
     statuses: string[];
     onStatusChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     toggleSubtaskCompleted: (index: number) => void;

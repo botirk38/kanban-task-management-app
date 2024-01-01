@@ -55,7 +55,7 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
             name: state.boardName,
             id: 0,
             columns: state.boardColumns.map(column => ({
-                id: '',
+                id: 0,
                 name: column,
                 tasks: [],
                 status: {

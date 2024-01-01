@@ -65,7 +65,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
           ))}
           <ButtonAddTask
             className="dark:bg-white bg-opacity-10 text-purple-dark"
-            onClick={() => dispatch({ type: "ADD_SUBTASK", payload: { title: "", isCompleted: false, task: state.id, id: '' } })}
+            onClick={() => dispatch({ type: "ADD_SUBTASK", payload: { title: "", isCompleted: false, task: state.id, id: 0 } })}
           >
             + Add new Subtask
           </ButtonAddTask>

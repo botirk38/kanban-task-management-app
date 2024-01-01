@@ -12,7 +12,7 @@ interface TaskOperations {
     onClose?: () => void;
 }
 
-const createTask = async (task: Task, boardId: string, columnId: string) => {
+const createTask = async (task: Task, boardId: number, columnId: number) => {
 
     try {
         const response = await fetch(`/api/boards/${boardId}/columns/${columnId}/`, {
@@ -38,7 +38,7 @@ const createTask = async (task: Task, boardId: string, columnId: string) => {
 
 }
 
-const postSubtasks = async (boardId: string, columnId: string, taskId: string, subtasks: Subtask[]) => {
+const postSubtasks = async (boardId: number, columnId: number, taskId: number, subtasks: Subtask[]) => {
     console.log("Task Id : ", taskId);
 
     try {
@@ -68,7 +68,7 @@ const postSubtasks = async (boardId: string, columnId: string, taskId: string, s
 
 }
 
-const updateSubtask = debounce(async (boardId: string, columnId: string, taskId: string, subtaskId: string, updatedSubtask: Subtask) => {
+const updateSubtask = debounce(async (boardId: number, columnId: number, taskId: number, subtaskId: number, updatedSubtask: Subtask) => {
 
     try {
 
@@ -96,7 +96,7 @@ const updateSubtask = debounce(async (boardId: string, columnId: string, taskId:
 }, 500);
 
 
-const updateStatus = async (boardId: string, columnId: string, taskId: string, task: Task) => {
+const updateStatus = async (boardId: number, columnId: number, taskId: number, task: Task) => {
 
     try {
 

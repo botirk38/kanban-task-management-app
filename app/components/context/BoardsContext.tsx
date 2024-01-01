@@ -9,7 +9,7 @@ type BoardsContextType = {
     boards: Board[];
     setBoards: Dispatch<SetStateAction<Board[]>>;
     addBoard: (newBoard: Board) => void;
-    deleteBoard: (boardId: string) => void;
+    deleteBoard: (boardId: number) => void;
     fetchBoards: () => void;
   };
   
@@ -52,7 +52,7 @@ export const BoardsProvider: React.FC<BoardsProviderProps> = ({ children }) => {
     }
   }
 
-async function deleteBoard(boardId: string) {
+async function deleteBoard(boardId: number) {
   console.log("Deleting Board:", boardId);
   try {
     const response = await fetch(`api/boards/${boardId}`, {

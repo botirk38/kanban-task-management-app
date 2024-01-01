@@ -37,7 +37,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
       }, [currentBoard, currentColumnIndex, task]);
 
       
-      const editTaskApi = async (boardId: string, columnId: string, taskId: string, updatedTask: Task) => {
+      const editTaskApi = async (boardId: number, columnId: number, taskId: number, updatedTask: Task) => {
         try {
 
             const subtasksWithTaskId = updatedTask.subtasks?.map(subtask => ({

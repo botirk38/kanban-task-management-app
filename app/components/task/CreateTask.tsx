@@ -19,8 +19,8 @@ export type State = {
     description: string;
     status: string;
     subtasks?: Subtask[];
-    columnId: string;
-    id: string;
+    columnId: number;
+    id: number;
 
 }
 
@@ -94,8 +94,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
         description: '',
         status: statuses[0],
         subtasks: [],
-        columnId: columns ? columns[0].id : '' ,
-        id: ''
+        columnId: columns ? columns[0].id : 0 ,
+        id: 0
     });
 
     const {addTask} = useTaskOperations({ currentBoard, setCurrentBoard, onClose });
