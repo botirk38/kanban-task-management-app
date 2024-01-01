@@ -18,7 +18,7 @@ export type State = {
     title: string;
     description: string;
     status: string;
-    subtasks: Subtask[];
+    subtasks?: Subtask[];
     columnId: string;
     id: string;
 
@@ -50,13 +50,13 @@ export const reducer = (state: State, action: Action): State => {
                 columnId: newColumnId
     }; 
         case 'ADD_SUBTASK':
-            return { ...state, subtasks: [...state.subtasks, action.payload] };
+            return { ...state, subtasks: [...state.subtasks!, action.payload] };
         case 'DELETE_SUBTASK':
-            return { ...state, subtasks: state.subtasks.filter((_, index) => index !== action.payload) };
+            return { ...state, subtasks: state.subtasks?.filter((_, index) => index !== action.payload) };
         case 'TOGGLE_SUBTASK_COMPLETED':
             return {
                 ...state,
-                subtasks: state.subtasks.map((subtask, index) => {
+                subtasks: state.subtasks?.map((subtask, index) => {
                     if (index === action.payload) {
                         return { ...subtask, completed: !subtask.isCompleted };
                     }
@@ -66,7 +66,7 @@ export const reducer = (state: State, action: Action): State => {
         case 'UPDATE_SUBTASK':
             return {
                 ...state,
-                subtasks: state.subtasks.map((subtask, index) => {
+                subtasks: state.subtasks?.map((subtask, index) => {
                     if (index === action.payload.index) {
                         return { ...subtask, title: action.payload.title };
                     }

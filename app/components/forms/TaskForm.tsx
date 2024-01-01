@@ -12,7 +12,7 @@ interface TaskFormProps {
     onSubmit: (event: React.FormEvent<HTMLButtonElement>) => void;
     title: string;
     onStatusChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    columns: Column[]
+    columns: Column[];
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onSubmit, title, columns}) => {
@@ -44,7 +44,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ state, dispatch, statuses = [], onS
         {/* Subtasks */}
         <div className="flex flex-col justify-center w-full items-start gap-4">
           <p className="dark:text-white font-bold text-sm text-blue-grayish">Subtasks</p>
-          {state.subtasks.map((subtask, index) => (
+          {state.subtasks?.map((subtask, index) => (
             <React.Fragment key={index}>
               <div className="w-full flex justify-between items-center gap-4">
                 <input

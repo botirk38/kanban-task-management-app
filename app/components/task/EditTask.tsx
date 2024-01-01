@@ -24,7 +24,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
         }
       
         return currentBoard.columns.findIndex(column =>
-          column.tasks.findIndex(t => t.id === task.id) !== -1
+          column.tasks?.findIndex(t => t.id === task.id) !== -1
         );
       }, [currentBoard, task]);
       
@@ -33,7 +33,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
           return -1;
         }
       
-        return currentBoard?.columns[currentColumnIndex].tasks.findIndex(t => t.id === task.id);
+        return currentBoard?.columns[currentColumnIndex].tasks?.findIndex(t => t.id === task.id);
       }, [currentBoard, currentColumnIndex, task]);
 
       
@@ -81,13 +81,15 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
             // Update or move the task based on its updated status
             if (task.status !== updatedTaskResponse.status) {
                 // Remove the task from its current position
-                updatedBoard.columns[currentColumnIndex].tasks.splice(currentTaskIndex ?? -1, 1);
+                updatedBoard.columns[currentColumnIndex].tasks?.splice(currentTaskIndex ?? -1, 1);
                 // Find the new column index and add the updated task
                 const newColumnIndex = updatedBoard.columns.findIndex(column => column.name === updatedTaskResponse.status);
-                updatedBoard.columns[newColumnIndex].tasks.push(updatedTaskResponse);
+                updatedBoard.columns[newColumnIndex].tasks?.push(updatedTaskResponse);
             } else {
                 // Update the task in its current position
-                updatedBoard.columns[currentColumnIndex].tasks[currentTaskIndex ?? -1] = updatedTaskResponse;
+                if (updatedBoard.columns[currentColumnIndex].tasks) {
+                    updatedBoard.columns[currentColumnIndex].tasks?.push(updatedTaskResponse);
+                }
             }
 
             setCurrentBoard(updatedBoard);
@@ -106,17 +108,15 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
     return (
         <section className="fixed min-h-screen inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
             <TaskForm 
-                state={state} 
-                dispatch={dispatch} 
-                statuses={statuses} 
-                onSubmit={
-                (e) => {
+                state={state}
+                dispatch={dispatch}
+                statuses={statuses}
+                onSubmit={(e) => {
                     e.preventDefault();
                     editTask(state);
-                }} 
+                } }
                 title="Edit Task"
-                onStatusChange={onStatusChange}
-            />
+                onStatusChange={onStatusChange} columns={currentBoard!.columns}          />
         </section>
     )
 }
