@@ -27,7 +27,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ id, statuses, onStatusChange,
         }
         }, [boards, currentBoard, setCurrentBoard]);
     
-
+    
     const taskFromContext = useMemo(() => {
         for (const column of currentBoard?.columns || boards[0].columns) {
             const task = column.tasks?.find(t => t.id === id);
