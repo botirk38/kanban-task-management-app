@@ -7,14 +7,13 @@ export interface Board {
 
 export interface Column {
     name: string;
-    tasks: Task[];
+    tasks?: Task[];
     id: string 
     status?: {
         name: string;
         icon?: JSX.Element; 
       };
 
-    columnId: string;
 }
 
 export interface Task {
@@ -24,6 +23,7 @@ export interface Task {
     description: string;
     status: string;
     subtasks: Subtask[] | undefined;
+    
 }
 
 export interface Subtask {

@@ -53,13 +53,16 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
         e.preventDefault();
         createBoard({
             name: state.boardName,
+            id: '',
             columns: state.boardColumns.map(column => ({
+                id: '',
                 name: column,
                 tasks: [],
                 status: {
                     name: column,
                 }
-            }))
+            })),
+            user: 0
         });
 
         dispatch({ type: 'SET_BOARD_NAME', payload: '' });
