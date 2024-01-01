@@ -148,14 +148,14 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
                 }));
 
-                const createdSubtasks = await postSubtasks(currentBoard.id, newTask.columnId, createdTask.id, updatedSubtasks);
+                const createdSubtasks = await postSubtasks(currentBoard.id, newTask.columnId, createdTask.id, updatedSubtasks!);
                 const updatedTaskWithSubtasks = { ...createdTask, subtasks: createdSubtasks };
 
                 const updatedBoard = { ...currentBoard };
                 const columnIndex = currentBoard.columns.findIndex(column => column.id === newTask.columnId);
 
                 if (columnIndex !== -1) {
-                    updatedBoard.columns[columnIndex].tasks.push(updatedTaskWithSubtasks);
+                    updatedBoard.columns[columnIndex].tasks?.push(updatedTaskWithSubtasks);
                     setCurrentBoard(updatedBoard);
                 } else {
                     console.error(`No column found with the ID ${createdTask.columnId}`);
@@ -189,8 +189,8 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
                 // Update the board's columns with the moved task
                 if (oldColumnIndex !== -1 && newColumnIndex !== -1) {
                     const updatedBoard = { ...currentBoard };
-                    updatedBoard.columns[oldColumnIndex].tasks = updatedBoard.columns[oldColumnIndex].tasks.filter(task => task.id !== selectedTask.id);
-                    updatedBoard.columns[newColumnIndex].tasks.push(updatedTaskResponse);
+                    updatedBoard.columns[oldColumnIndex].tasks = updatedBoard.columns[oldColumnIndex].tasks?.filter(task => task.id !== selectedTask.id);
+                    updatedBoard.columns[newColumnIndex].tasks?.push(updatedTaskResponse);
 
                     setCurrentBoard(updatedBoard);
                 }
@@ -212,11 +212,11 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
             await updateSubtask(currentBoard.id, selectedTask.columnId, selectedTask.id, selectedTask.subtasks[subtaskIndex].id, updatedSelectedTask.subtasks[subtaskIndex]);
 
-            const taskIndex = currentBoard.columns.findIndex(column => column.tasks.includes(selectedTask));
+            const taskIndex = currentBoard.columns.findIndex(column => column.tasks?.includes(selectedTask));
 
             if (taskIndex !== -1) {
                 const updatedBoard = { ...currentBoard };
-                updatedBoard.columns[taskIndex].tasks = updatedBoard.columns[taskIndex].tasks.map(task => task === selectedTask ? updatedSelectedTask : task);
+                updatedBoard.columns[taskIndex].tasks = updatedBoard.columns[taskIndex].tasks?.map(task => task === selectedTask ? updatedSelectedTask : task);
 
 
                 setCurrentBoard(updatedBoard);
