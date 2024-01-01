@@ -28,6 +28,7 @@ export async function DELETE( request: NextRequest, { params} : { params : {id :
       headers: {
         'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
         'X-CSRFToken': csrfToken,
+        'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
       },
     });
 
@@ -69,6 +70,7 @@ export async function PATCH( request: NextRequest, {params} : { params: {id : st
           'Content-Type': 'application/json',
           'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
           'X-CSRFToken': csrfToken,
+          'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
         },
         body: JSON.stringify(data),
         });
