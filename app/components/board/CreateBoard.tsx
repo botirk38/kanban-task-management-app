@@ -53,7 +53,7 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
         e.preventDefault();
         createBoard({
             name: state.boardName,
-            id: '',
+            id: 0,
             columns: state.boardColumns.map(column => ({
                 id: '',
                 name: column,
