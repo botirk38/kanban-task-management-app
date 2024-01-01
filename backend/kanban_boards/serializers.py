@@ -54,7 +54,6 @@ class TaskSerializer(serializers.ModelSerializer):
         subtasks_data = validated_data.pop('subtasks', [])
         instance = super(TaskSerializer, self).update(instance, validated_data)
 
-
         for subtask_data in subtasks_data:
             subtask_id = subtask_data.get('id', None)
 

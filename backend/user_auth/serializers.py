@@ -6,13 +6,13 @@ from django.utils import timezone
 from django.contrib.auth.password_validation import validate_password
 from django.db import transaction
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ( 'username', 'password', 'email')
+        fields = ('username', 'password', 'email')
         extra_kwargs = {'password': {'write_only': True}}
 
-    
     def validate_username(self, value):
         if self.instance and self.instance.username == value:
             return value
@@ -31,24 +31,24 @@ class UserSerializer(serializers.ModelSerializer):
             raise ValidationError("A user with that email already exists.")
         return normalized_email
 
-
-
     def validate_password(self, value):
-        user = User(username=self.initial_data.get('username'), email=self.initial_data.get('email'))
+        user = User(username=self.initial_data.get('username'),
+                    email=self.initial_data.get('email'))
         validate_password(value, user=user)
         return value
 
-
     def create(self, validated_data):
-        validated_data['email'] =  User.objects.normalize_email(validated_data.get('email'))
+        validated_data['email'] = User.objects.normalize_email(
+            validated_data.get('email'))
         user = User.objects.create_user(**validated_data)
-        return user 
+        return user
 
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
 
         if 'email' in validated_data:
-            validated_data['email'] = User.objects.normalize_email(validated_data.get('email'))
+            validated_data['email'] = User.objects.normalize_email(
+                validated_data.get('email'))
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -59,7 +59,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -74,7 +73,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
             user_data = validated_data.pop('user', None)
 
             if user_data:
-                user_serializer = UserSerializer(instance.user, data=user_data, partial=True)
+                user_serializer = UserSerializer(
+                    instance.user, data=user_data, partial=True)
                 if user_serializer.is_valid(raise_exception=True):
                     user_serializer.save()
 
@@ -92,5 +92,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['user'] = UserSerializer(instance.user).data
         return representation
-
-

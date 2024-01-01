@@ -8,12 +8,11 @@ from rest_framework.exceptions import NotFound
 import logging
 logger = logging.getLogger(__name__)
 
-import logging
 
 logger = logging.getLogger(__name__)
 
-class BoardViewSet(viewsets.ModelViewSet):
 
+class BoardViewSet(viewsets.ModelViewSet):
 
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
@@ -21,7 +20,7 @@ class BoardViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Board.objects.all().filter(user=self.request.user)
-    
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -30,8 +29,8 @@ class BoardViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         else:
             logger.debug(f"Board creation failed: {serializer.errors}")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-    
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def update(self, request, *args, **kwargs):
         logger.info(f"Incoming PATCH data: {request.data}")
 
@@ -51,34 +50,32 @@ class BoardViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.error(f"Error deleting board: {e}")
             return Response({"detail": "Error deleting board"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def perform_destroy(self, instance):
         instance.delete()
 
 
-    
-        
 class ColumnViewSet(viewsets.ModelViewSet):
     queryset = Column.objects.all()
     serializer_class = ColumnSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         board_id = self.kwargs.get('board_id')
 
         if not Board.objects.filter(id=board_id).exists():
             raise NotFound('Board not found')
 
-        return Column.objects.filter(board_id = board_id)
-    
+        return Column.objects.filter(board_id=board_id)
+
     def create(self, request, *args, **kwargs):
         board_id = self.kwargs.get('board_id')
 
         try:
-            board = Board.objects.filter(id = board_id)
+            board = Board.objects.filter(id=board_id)
 
         except Board.DoesNotExist:
-            return Response( {"detail": "Board not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Board not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = ColumnSerializer
 
@@ -90,14 +87,11 @@ class ColumnViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
-
-   
 
     def create(self, request, *args, **kwargs):
         column_id = kwargs.get('column_id')
@@ -108,7 +102,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(column=column)  
+            serializer.save(column=column)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -119,18 +113,16 @@ class TaskViewSet(viewsets.ModelViewSet):
         if column_id:
             try:
                 column = Column.objects.get(id=column_id)
-                task.column = column  
+                task.column = column
             except Column.DoesNotExist:
                 return Response({'detail': 'Column not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = self.get_serializer(task, data=request.data, partial='partial' in request.method)
+        serializer = self.get_serializer(
+            task, data=request.data, partial='partial' in request.method)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-
-
-
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SubtaskViewSet(viewsets.ModelViewSet):
@@ -171,9 +163,3 @@ class SubtaskViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
