@@ -16,7 +16,7 @@ export async function POST(request: Request, { params } : { params : {id : strin
         const requestBody = await request.json(); 
 	console.log(requestBody);
 
-        const response = await fetch(`http://127.0.0.1:8000/boards/${boardId}/columns/${colId}/tasks/${taskId}/subtasks/`, {
+        const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/subtasks/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

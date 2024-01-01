@@ -17,7 +17,7 @@ export async function DELETE( request: NextRequest, { params} : { params : {id :
   const csrfToken = cookieStore.get('csrftoken')?.value;
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/boards/${id}/`, {
+    const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${id}/`, {
       method: 'DELETE',
       headers: {
         'Cookie': `sessionid=${sessionId}; csrftoken=${csrfToken}`,
@@ -50,7 +50,7 @@ export async function PATCH( request: NextRequest, {params} : { params: {id : st
   const csrfToken = cookieStore.get('csrftoken')?.value;
 
   try {
-    const response = await fetch (`http://127.0.0.1:8000/boards/${id}/`, {
+    const response = await fetch (`https://kanban-a092a99fbf97.herokuapp.com/boards/${id}/`, {
         method: 'PATCH',
 
         headers: {

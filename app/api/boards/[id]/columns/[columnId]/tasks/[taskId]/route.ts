@@ -11,7 +11,7 @@ export async function DELETE(request: Request, { params }) {
 	const taskId = params.taskId
 
 	try {
-		const response = await fetch(`http://127.0.0.1:8000/boards/${boardId}/columns/${colId}/tasks/${taskId}`, {
+		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export async function PUT(request: Request, { params }: { params: { id: string, 
 
 
 	try {
-		const response = await fetch(`http://127.0.0.1:8000/boards/${boardId}/columns/${colId}/tasks/${taskId}/`, {
+		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
 
 	try {
-		const response = await fetch(`http://127.0.0.1:8000/boards/${boardId}/columns/${colId}/tasks/${taskId}/`, {
+		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',

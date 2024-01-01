@@ -7,7 +7,7 @@ export async function GET(){
 	const csrfToken = cookieStore.get('csrftoken')?.value;
 
 	try {
-		const response = await fetch("http://127.0.0.1:8000/boards/", {
+		const response = await fetch("https://kanban-a092a99fbf97.herokuapp.com/boards/", {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export async function GET(){
 		
 			const data  = await request.json()
 
-			const response = await fetch("http://127.0.0.1:8000/boards/", {
+			const response = await fetch("https://kanban-a092a99fbf97.herokuapp.com/boards/", {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

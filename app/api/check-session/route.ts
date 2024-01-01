@@ -9,7 +9,7 @@ export async function GET() {
 
 	try {
 
-		const response = await fetch('http://127.0.0.1:8000/auth/check-session/', {
+		const response = await fetch('https://kanban-a092a99fbf97.herokuapp.com/auth/check-session/', {
 			headers: {
 				'Content-Type': 'application/json',
 				'Cookie': `sessionid=${sessionID}; csrftoken=${csrfToken}`,

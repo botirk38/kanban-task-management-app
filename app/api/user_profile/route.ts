@@ -6,7 +6,7 @@ export async function GET() {
   const sessionID = cookieStore.get('sessionid')?.value;
   const csrfToken = cookieStore.get('csrftoken')?.value;
 
-  const response = await fetch('http://127.0.0.1:8000/auth/profile/', {
+  const response = await fetch('https://kanban-a092a99fbf97.herokuapp.com/auth/profile/', {
     headers: {
       'Content-Type': 'application/json',
       'Cookie': `sessionid=${sessionID}; csrftoken=${csrfToken}`, 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    const response = await fetch('http://127.0.0.1:8000/auth/profile/', {
+    const response = await fetch('https://kanban-a092a99fbf97.herokuapp.com/auth/profile/', {
       method:'PATCH',
       headers: {
         'Content-Type': 'application/json',
