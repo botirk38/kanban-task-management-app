@@ -19,7 +19,7 @@ export type State = {
     description: string;
     status: string;
     subtasks?: Subtask[];
-    columnId?: number;
+    columnId: number;
     id?: number;
 
 }
@@ -43,11 +43,11 @@ export const reducer = (state: State, action: Action): State => {
         case 'SET_STATUS':
             const { status, columns } = action.payload;
             const columnMatch = columns.find( (column) => column.name === status)
-            const newColumnId = columnMatch ? columnMatch.id : state.columnId ? state.columnId : 0;
+            const newColumnId = columnMatch ? columnMatch.id : state.columnId;
             return { 
                 ...state, 
                 status: status,
-                columnId: newColumnId
+                columnId: newColumnId!
     }; 
         case 'ADD_SUBTASK':
             return { ...state, subtasks: [...state.subtasks!, action.payload] };
@@ -94,7 +94,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({onClose, statuses}) => {
         description: '',
         status: statuses[0],
         subtasks: [],
-        columnId: columns ? columns[0].id : 0 ,
+        columnId: columns ? columns[0].id! : 0 ,
        
     });
 
