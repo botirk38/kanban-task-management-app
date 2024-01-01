@@ -120,7 +120,7 @@ export default function LoginPage(){
           <Toaster/>
         </form>
       </Form>
-     <Link className="absolute top-10 left-72 md:left-80 lg:left-[28rem] 2xl:left-[60rem]" href="/signup">Haven't signed up? Sign up here.</Link>
+     <Link className="absolute top-10 left-72 md:left-80 lg:left-[28rem] 2xl:left-[60rem]" href="/signup">Haven&apos;t signed up? Sign up here.</Link>
 
     </>
   )

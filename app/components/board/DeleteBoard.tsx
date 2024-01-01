@@ -26,7 +26,7 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose, parentClose }) => {
             // Set the currentBoard to the first board in the array or null if no boards are left
             setCurrentBoard(boards.length > 1 ? boards.find(b => b.id !== currentBoard.id) : null);
             onClose();
-            parentClose();
+            parentClose ? parentClose() : null;
         }
     };
 
@@ -36,7 +36,7 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose, parentClose }) => {
         if (!boards.some(b => b.id === currentBoard?.id)) {
             setCurrentBoard(boards.length > 0 ? boards[0] : null);
         }
-    }, [boards, currentBoard]);
+    }, [boards, currentBoard, setCurrentBoard]);
 
 
     return (
