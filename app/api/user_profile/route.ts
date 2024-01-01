@@ -24,6 +24,11 @@ export async function POST(request: Request) {
   const csrfToken = cookieStore.get('csrftoken')?.value;
 
   try {
+    if (!sessionID || !csrfToken) {
+      // Handle the error here, e.g., return a response or throw an error
+      return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+    }
+    
     const data = await request.json();
 
     const response = await fetch('https://kanban-a092a99fbf97.herokuapp.com/auth/profile/', {

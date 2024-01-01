@@ -13,8 +13,13 @@ export async function POST(request: Request, { params } : { params : {id : strin
     const taskId = params.taskId;
 
     try {
+
+        if (!sessionId || !csrfToken) {
+            // Handle the error here, e.g., return a response or throw an error
+            return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+          }
+          
         const requestBody = await request.json(); 
-	console.log(requestBody);
 
         const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/subtasks/`, {
             method: 'POST',

@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 
-export async function DELETE(request: Request, { params }) {
+export async function DELETE(request: Request, { params  }: { params: { id: string, columnId: string, taskId: string } }) {
 	const cookieStore = cookies();
 	const sessionId = cookieStore.get('sessionid')?.value
 	const csrfToken = cookieStore.get('csrftoken')?.value
@@ -11,6 +11,12 @@ export async function DELETE(request: Request, { params }) {
 	const taskId = params.taskId
 
 	try {
+
+		if (!sessionId || !csrfToken) {
+			// Handle the error here, e.g., return a response or throw an error
+			return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+		  }
+		  
 		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}`, {
 			method: 'DELETE',
 			headers: {
@@ -47,6 +53,12 @@ export async function PUT(request: Request, { params }: { params: { id: string, 
 
 
 	try {
+
+		if (!sessionId || !csrfToken) {
+			// Handle the error here, e.g., return a response or throw an error
+			return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+		  }
+		  
 		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/`, {
 			method: 'PUT',
 			headers: {
@@ -90,6 +102,12 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
 
 	try {
+
+		if (!sessionId || !csrfToken) {
+			// Handle the error here, e.g., return a response or throw an error
+			return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+		  }
+		  
 		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/`, {
 			method: 'PATCH',
 			headers: {

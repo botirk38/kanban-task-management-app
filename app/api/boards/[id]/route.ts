@@ -17,6 +17,12 @@ export async function DELETE( request: NextRequest, { params} : { params : {id :
   const csrfToken = cookieStore.get('csrftoken')?.value;
 
   try {
+
+    if (!sessionId || !csrfToken) {
+      // Handle the error here, e.g., return a response or throw an error
+      return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+    }
+    
     const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${id}/`, {
       method: 'DELETE',
       headers: {
@@ -50,6 +56,12 @@ export async function PATCH( request: NextRequest, {params} : { params: {id : st
   const csrfToken = cookieStore.get('csrftoken')?.value;
 
   try {
+
+    if (!sessionId || !csrfToken) {
+      // Handle the error here, e.g., return a response or throw an error
+      return new Response(JSON.stringify({ error: 'Session ID or CSRF token is missing' }), { status: 500 });
+    }
+    
     const response = await fetch (`https://kanban-a092a99fbf97.herokuapp.com/boards/${id}/`, {
         method: 'PATCH',
 
