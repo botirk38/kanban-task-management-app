@@ -1,14 +1,14 @@
 export interface Board {
     name: string;
     columns: Column[];
-    id: number;
-    user: number
+    id?: number;
+    user?: number
 }
 
 export interface Column {
     name: string;
     tasks?: Task[];
-    id: number;
+    id?: number;
     status?: {
         name: string;
         icon?: JSX.Element; 
@@ -17,8 +17,8 @@ export interface Column {
 }
 
 export interface Task {
-    id: number;
-    columnId: number;
+    id?: number;
+    columnId?: number;
     title: string;
     description: string;
     status: string;
@@ -30,5 +30,5 @@ export interface Subtask {
     title: string;
     isCompleted: boolean;
     task: any; 
-    id: number;
+    id?: number;
 }

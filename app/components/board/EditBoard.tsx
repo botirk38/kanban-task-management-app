@@ -68,7 +68,7 @@ const EditBoard: React.FC<EditBoardProps> = ({ onClose, parentClose }) => {
         console.log("Modified Board: ", modifiedBoard);
         const updatedBoard = await updateBoard(modifiedBoard)
         console.log("Updated Board: ", updateBoard);
-        setCurrentBoard(updatedBoard)
+        setCurrentBoard(modifiedBoard)
         onClose();
         parentClose ? parentClose() : null;
     }

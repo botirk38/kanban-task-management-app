@@ -20,6 +20,7 @@ const DeleteBoard: React.FC<DeleteBoardProps> = ({ onClose, parentClose }) => {
     }
 
     const handleDeleteBoard = () => {
+        console.log(currentBoard, currentBoard?.id)
         if (currentBoard && currentBoard.id) {
             deleteBoard(currentBoard.id);
 
