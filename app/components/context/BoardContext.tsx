@@ -32,7 +32,7 @@ export const BoardProvider: FC<BoardProviderProps> = ({children}) => {
         if (boards && boards.length > 0) {
             setCurrentBoard(boards[0]);
         }
-    }, []);
+    }, [boards]);
 
 
     return (

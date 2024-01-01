@@ -14,7 +14,7 @@ export default function SignupLayout({
       	</div>
 
 	<picture className="hidden md:block flex justify-end items-end w-full ">
-		<img src="/assets/auth-banner.png" className="min-w-full min-h-screen object-cover"/>
+		<img alt="" src="/assets/auth-banner.png" className="min-w-full min-h-screen object-cover"/>
 	</picture>
     </section>
   )
