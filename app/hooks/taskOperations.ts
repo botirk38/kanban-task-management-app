@@ -138,7 +138,8 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
     const addTask = useCallback(async (newTask: Task) => {
         if (currentBoard) {
             const taskData = { ...newTask, subtasks: undefined };
-            const createdTask = await createTask(taskData, currentBoard.id, newTask.columnId);
+            console.log("Task Data : ", taskData)
+            const createdTask = await createTask(taskData, currentBoard.id!, newTask.columnId!);
 
             if (createdTask) {
 
@@ -148,7 +149,7 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
                 }));
 
-                const createdSubtasks = await postSubtasks(currentBoard.id, newTask.columnId, createdTask.id, updatedSubtasks!);
+                const createdSubtasks = await postSubtasks(currentBoard.id!, newTask.columnId!, createdTask.id, updatedSubtasks!);
                 const updatedTaskWithSubtasks = { ...createdTask, subtasks: createdSubtasks };
 
                 const updatedBoard = { ...currentBoard };
@@ -177,7 +178,7 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
             const updatedTaskData = { ...selectedTask, status: newStatus };
 
             try {
-                const updatedTaskResponse = await updateStatus(currentBoard.id, updatedTaskData.columnId, selectedTask.id, updatedTaskData);
+                const updatedTaskResponse = await updateStatus(currentBoard.id!, updatedTaskData.columnId!, selectedTask.id!, updatedTaskData);
 
                 // Update the selected task with the response
                 setSelectedTask?.(updatedTaskResponse);
@@ -210,7 +211,7 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
             updatedSelectedTask.subtasks[subtaskIndex].isCompleted = !updatedSelectedTask.subtasks[subtaskIndex].isCompleted;
 
-            await updateSubtask(currentBoard.id, selectedTask.columnId, selectedTask.id, selectedTask.subtasks[subtaskIndex].id, updatedSelectedTask.subtasks[subtaskIndex]);
+            await updateSubtask(currentBoard.id!, selectedTask.columnId!, selectedTask.id!, selectedTask.subtasks[subtaskIndex].id!, updatedSelectedTask.subtasks[subtaskIndex]);
 
             const taskIndex = currentBoard.columns.findIndex(column => column.tasks?.includes(selectedTask));
 
