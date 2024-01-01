@@ -28,7 +28,9 @@ const config: Config = {
         'body-l': ['13px', '23px'],
       },
       fontWeight: {
+        // @ts-ignore
         'bold': 700,
+        // @ts-ignore
         'medium': 500,
       },
       colors: {
