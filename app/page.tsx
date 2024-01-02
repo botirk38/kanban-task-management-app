@@ -5,7 +5,7 @@ import Hero from "./components/landing/Hero"
 
 const Page = () => {
     return (
-        <main className="flex flex-col justify-start items-center py-20 px-10 min-h-screen ">
+        <main className="flex flex-col-reverse gap-20 justify-end md:flex-col md:justify-start md:items-center py-20 px-10 min-h-screen ">
             <Hero />
             <Image
                 src="/assets/landing-image.png"
@@ -13,7 +13,7 @@ const Page = () => {
                 height={0}
                 sizes="100vw"
                 alt= "Image representing kanban methodology"
-                style={{ width: '100%', height: '100%' }} // optional
+                style={{ width: '100%', height: '100%', maxWidth: "1440px" }} // optional
             />
         </main>
 
