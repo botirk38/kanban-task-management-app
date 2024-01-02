@@ -98,7 +98,7 @@ const Dashboard = () => {
   }
 
   return (
-    <main className="dark:bg-blue-gray min-h-screen overflow-y-hidden  z-0 lg:w-full lg:col-span-2 ">
+    <main className="dark:bg-blue-gray min-h-screen overflow-hidden z-0 lg:w-full lg:col-span-2 ">
       <div className=" hidden lg:flex lg:p-4 lg:justify-between lg:items-start lg:w-full lg:z-50 lg:sticky lg:left-0">
         <h1 className="text-4xl font-bold text-blue-dark dark:text-white">
           {currentBoardWithIcons.name}
@@ -145,7 +145,7 @@ const Dashboard = () => {
       )}
 
       {currentBoardWithIcons?.columns?.length === 0 ? (
-        <section className="overflow-y-visible grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-[120rem] min-h-screen lg:w-[150rem] 2xl:min-w-[200rem] bg-blue-pale dark:bg-blue-dark z-0 lg:gap-10">
+        <section className="overflow-visible grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-[120rem] min-h-screen lg:w-[150rem] 2xl:min-w-[200rem] bg-blue-pale dark:bg-blue-dark z-0 lg:gap-10">
           <button
             className="hidden lg:flex lg:flex-col lg:justify-center lg:items-center lg:gap-4 lg:w-full lg:min-h-full lg:text-purple-dark lg:font-xl lg:font-bold lg:text-2xl lg:hover:bg-purple-light lg:hover:bg-opacity-20"
             onClick={() => setAddColumn((prevState) => !prevState)}
@@ -154,7 +154,7 @@ const Dashboard = () => {
           </button>
         </section>
       ) : (
-        <section className="overflow-y-visible grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-[120rem] min-h-screen lg:w-[150rem] 2xl:min-w-[200rem] bg-blue-pale dark:bg-blue-dark z-0 lg:gap-10">
+        <section className="overflow-x-auto grid place-items-start grid-cols-auto grid-rows-1 grid-flow-col p-4 w-full min-h-screen bg-blue-pale dark:bg-blue-dark z-0 lg:gap-10">
           {currentBoardWithIcons?.columns?.map((column, index) => (
             <TaskColumn key={index} column={column} openTask={openTask} />
           ))}
