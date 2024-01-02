@@ -179,11 +179,12 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
         if (currentBoard && selectedTask) {
             const newStatus = event.target.value;
             const updatedTaskData = { ...selectedTask, status: newStatus };
+            console.log("Updated Task Data : ", updatedTaskData)
     
             try {
                 // Wait for the updateStatus function to complete
                 const updatedTask = await updateStatus(currentBoard.id!, updatedTaskData.columnId!, selectedTask.id!, updatedTaskData);
-    
+                console.log("Updated Task : ", updatedTask)
                 // Then update the selectedTask state
                 setSelectedTask?.(updatedTask);
     
@@ -215,17 +216,17 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
             updatedSelectedTask.subtasks[subtaskIndex].isCompleted = !updatedSelectedTask.subtasks[subtaskIndex].isCompleted;
 
-            await updateSubtask(currentBoard.id!, selectedTask.columnId!, selectedTask.id!, selectedTask.subtasks[subtaskIndex].id!, updatedSelectedTask.subtasks[subtaskIndex]);
+            const updatedTask = await updateSubtask(currentBoard.id!, selectedTask.columnId!, selectedTask.id!, selectedTask.subtasks[subtaskIndex].id!, updatedSelectedTask.subtasks[subtaskIndex]);
 
             const taskIndex = currentBoard.columns.findIndex(column => column.tasks?.includes(selectedTask));
 
             if (taskIndex !== -1) {
                 const updatedBoard = { ...currentBoard };
-                updatedBoard.columns[taskIndex].tasks = updatedBoard.columns[taskIndex].tasks?.map(task => task === selectedTask ? updatedSelectedTask : task);
+                updatedBoard.columns[taskIndex].tasks = updatedBoard.columns[taskIndex].tasks?.map(task => task === selectedTask ? updatedTask : task);
 
 
                 setCurrentBoard(updatedBoard);
-                setSelectedTask?.(updatedSelectedTask);
+                setSelectedTask?.(updatedTask);
             } else {
                 console.error("Selected task not found within the current board.");
             }

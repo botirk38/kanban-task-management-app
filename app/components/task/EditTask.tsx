@@ -46,7 +46,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
             }));
 
             const taskData = { ...updatedTask, subtasks: subtasksWithTaskId };
-            console.log(taskData);
+            console.log("Edit Task data:" ,taskData);
 
             const response = await fetch(`api/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
                 method: 'PUT',
@@ -110,7 +110,7 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
                 state={state}
                 dispatch={dispatch}
                 statuses={statuses}
-                onSubmit={(e) => {
+                onSubmit={() => {
                     editTask(state);
                 } }
                 title="Edit Task"

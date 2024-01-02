@@ -20,7 +20,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 		  
 		const subtask = await request.json();
 
-		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/${boardId}/columns/${colId}/tasks/${taskId}/subtasks/${subTaskId}/`, {
+		const response = await fetch(`https://kanban-a092a99fbf97.herokuapp.com/boards/${boardId}/columns/${colId}/tasks/${taskId}/subtasks/${subTaskId}/`, {
 
 			method: 'PATCH',
 			headers: {
