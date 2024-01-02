@@ -43,7 +43,7 @@ const CreateBoard: React.FC<CreateBoardProps> = ({ onClose }) => {
     const {addBoard} = useContext(BoardsContext);
 
 
-    const createBoard = async (newBoard: Board) => {
+    const createBoard =  (newBoard: Board) => {
         addBoard(newBoard); 
         setCurrentBoard(newBoard);
         onClose();

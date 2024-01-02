@@ -4,6 +4,7 @@ import {createContext, useState, useContext, useEffect} from 'react';
 import { Board} from '../../types/Board';
 import { Dispatch, SetStateAction } from 'react';
 import { BoardContext } from './BoardContext';
+import { update } from 'lodash';
 
 type BoardsContextType = {
     boards: Board[];
@@ -41,12 +42,18 @@ export const BoardsProvider: React.FC<BoardsProviderProps> = ({ children }) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(newBoard),
       });
+      
 
       if (!response.ok) {
         throw new Error('Failed to add board');
       }
 
-      setBoards(prevBoards => [...prevBoards, newBoard]);
+      const updatedBoard = await response.json();
+
+      setBoards(prevBoards => [...prevBoards, updatedBoard]);
+
+      return updatedBoard;
+      
     } catch (err: any) {
       console.error("Error adding boards: ", err);
     }

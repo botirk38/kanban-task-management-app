@@ -50,9 +50,10 @@ const DeleteTask: React.FC<DeleteTaskProps> = ({onClose, parentClose, task}) =>{
                 const updatedBoard = { ...currentBoard };
                 const colIndex = updatedBoard.columns.findIndex(column => column.id === task.columnId);
                 if (colIndex > -1) {
+                    console.log("Found column")
                     const taskIndex = updatedBoard.columns[colIndex].tasks?.findIndex(t => t.id === task.id);
-                    if (taskIndex && taskIndex > -1) {
-                        updatedBoard.columns[colIndex].tasks?.splice(taskIndex, 1);
+                    if (taskIndex! > -1) {
+                        updatedBoard.columns[colIndex].tasks = updatedBoard.columns[colIndex].tasks?.filter(t => t.id !== task.id);
                         setCurrentBoard(updatedBoard);
                     }
                 }

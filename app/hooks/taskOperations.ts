@@ -93,7 +93,7 @@ const updateSubtask = debounce(async (boardId: number, columnId: number, taskId:
         console.error("Error creating task:", err);
 
     }
-}, 500);
+}, 0);
 
 
 const updateStatus = async (boardId: number, columnId: number, taskId: number, task: Task) => {
@@ -152,8 +152,8 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
                 console.log("Subtask Data : ", updatedSubtasks)
 
-                postSubtasks(currentBoard.id!, newTask.columnId!, createdTask.id, updatedSubtasks!);
-                const updatedTaskWithSubtasks = { ...createdTask, subtasks: updatedSubtasks };
+                const newSubtasks = await postSubtasks(currentBoard.id!, newTask.columnId!, createdTask.id, updatedSubtasks!);
+                const updatedTaskWithSubtasks = { ...createdTask, subtasks: newSubtasks };
 
                 const updatedBoard = { ...currentBoard };
                 const columnIndex = currentBoard.columns.findIndex(column => column.id === newTask.columnId);
@@ -216,17 +216,17 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
             updatedSelectedTask.subtasks[subtaskIndex].isCompleted = !updatedSelectedTask.subtasks[subtaskIndex].isCompleted;
 
-            const updatedTask = await updateSubtask(currentBoard.id!, selectedTask.columnId!, selectedTask.id!, selectedTask.subtasks[subtaskIndex].id!, updatedSelectedTask.subtasks[subtaskIndex]);
+            await updateSubtask(currentBoard.id!, selectedTask.columnId!, selectedTask.id!, selectedTask.subtasks[subtaskIndex].id!, updatedSelectedTask.subtasks[subtaskIndex]);
 
             const taskIndex = currentBoard.columns.findIndex(column => column.tasks?.includes(selectedTask));
 
             if (taskIndex !== -1) {
                 const updatedBoard = { ...currentBoard };
-                updatedBoard.columns[taskIndex].tasks = updatedBoard.columns[taskIndex].tasks?.map(task => task === selectedTask ? updatedTask : task);
+                updatedBoard.columns[taskIndex].tasks = updatedBoard.columns[taskIndex].tasks?.map(task => task === selectedTask ? updatedSelectedTask : task);
 
 
                 setCurrentBoard(updatedBoard);
-                setSelectedTask?.(updatedTask);
+                setSelectedTask?.(updatedSelectedTask);
             } else {
                 console.error("Selected task not found within the current board.");
             }
