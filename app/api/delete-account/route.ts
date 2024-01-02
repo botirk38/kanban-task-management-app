@@ -24,7 +24,8 @@ export async function DELETE(request: Request) {
 			headers: {
 				'Content-Type': 'application/json',
 				'Cookie': `sessionid=${sessionID}; csrftoken=${csrfToken}`,
-				'X-CSRFToken': csrfToken
+				'X-CSRFToken': csrfToken,
+				'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
 			},
 
 			body: JSON.stringify(user)

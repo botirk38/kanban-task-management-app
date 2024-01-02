@@ -18,7 +18,8 @@ export async function POST(request: Request) {
 			{
 				'Content-Type': 'application/json',
 				'Cookie': `csrftoken=${csrfToken}; sessionid=${sessionID};`,
-				'X-CSRFToken': csrfToken
+				'X-CSRFToken': csrfToken,
+				'Referer': 'https://kanban-task-management-cfqa84nfr-botirk38s-projects.vercel.app'
 			}
 		});
 

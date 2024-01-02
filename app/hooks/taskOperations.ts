@@ -152,8 +152,8 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
                 console.log("Subtask Data : ", updatedSubtasks)
 
-                const createdSubtasks = await postSubtasks(currentBoard.id!, newTask.columnId!, createdTask.id, updatedSubtasks!);
-                const updatedTaskWithSubtasks = { ...createdTask, subtasks: createdSubtasks };
+                postSubtasks(currentBoard.id!, newTask.columnId!, createdTask.id, updatedSubtasks!);
+                const updatedTaskWithSubtasks = { ...createdTask, subtasks: updatedSubtasks };
 
                 const updatedBoard = { ...currentBoard };
                 const columnIndex = currentBoard.columns.findIndex(column => column.id === newTask.columnId);
@@ -175,27 +175,27 @@ const useTaskOperations = ({ currentBoard, setCurrentBoard, selectedTask, setSel
 
 
 
-    const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleStatusChange = useCallback(async (event: React.ChangeEvent<HTMLSelectElement>) => {
         if (currentBoard && selectedTask) {
             const newStatus = event.target.value;
             const updatedTaskData = { ...selectedTask, status: newStatus };
     
             try {
                 // Wait for the updateStatus function to complete
-                updateStatus(currentBoard.id!, updatedTaskData.columnId!, selectedTask.id!, updatedTaskData);
+                const updatedTask = await updateStatus(currentBoard.id!, updatedTaskData.columnId!, selectedTask.id!, updatedTaskData);
     
                 // Then update the selectedTask state
-                setSelectedTask?.(updatedTaskData);
+                setSelectedTask?.(updatedTask);
     
                 // Find the old and new column indexes
                 const oldColumnIndex = currentBoard.columns.findIndex(column => column.id === selectedTask.columnId);
-                const newColumnIndex = currentBoard.columns.findIndex(column => column.name === newStatus);
+                const newColumnIndex = currentBoard.columns.findIndex(column => column.id === updatedTask.columnId);
     
                 // Update the board's columns with the moved task
                 if (oldColumnIndex !== -1 && newColumnIndex !== -1 && oldColumnIndex !== newColumnIndex) {
                     const updatedBoard = { ...currentBoard };
-                    updatedBoard.columns[oldColumnIndex].tasks = updatedBoard.columns[oldColumnIndex].tasks?.filter(task => task.id !== selectedTask.id);
-                    updatedBoard.columns[newColumnIndex].tasks?.push(updatedTaskData);
+                    updatedBoard.columns[oldColumnIndex].tasks = updatedBoard.columns[oldColumnIndex].tasks?.filter(task => task.id !== updatedTask.id);
+                    updatedBoard.columns[newColumnIndex].tasks?.push(updatedTask);
     
                     setCurrentBoard(updatedBoard);
                 }

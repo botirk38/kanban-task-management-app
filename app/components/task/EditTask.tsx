@@ -71,8 +71,9 @@ const EditTask: React.FC<EditTaskProps> = ({ onClose, task, onStatusChange}) => 
   const editTask = useCallback(async (updatedTask: Task) => {
     if (currentBoard && currentColumnIndex !== -1 && currentTaskIndex !== -1) {
         try {
+            const originalColId = currentBoard.columns[currentColumnIndex].id!;
             // Await the completion of the task update API call
-            const updatedTaskResponse = await editTaskApi(currentBoard.id!, updatedTask.columnId!, updatedTask.id!, updatedTask);
+            const updatedTaskResponse = await editTaskApi(currentBoard.id!, originalColId, updatedTask.id!, updatedTask);
 
             // Update the local state with the response from the server
             const updatedBoard = { ...currentBoard };
