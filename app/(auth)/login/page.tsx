@@ -20,7 +20,8 @@ import { useRouter } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/components/ui/use-toast"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useContext} from "react"
+import { BoardsContext } from "@/app/components/context/BoardsContext"
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -30,6 +31,7 @@ export default function LoginPage() {
 
   const router = useRouter();
   const { toast } = useToast();
+  const {fetchBoards} = useContext(BoardsContext);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,6 +64,7 @@ export default function LoginPage() {
         description: "User logged in successfully!",
       });
       router.push('/dashboard');
+      fetchBoards();
     }
 
 
