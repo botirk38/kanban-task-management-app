@@ -97,6 +97,7 @@ export default function LoginPage(){
               </FormControl>
               <FormDescription>
                 This is your public display name.
+                Test Username: tester
               </FormDescription>
               <FormMessage/>
             </FormItem>
@@ -111,6 +112,7 @@ export default function LoginPage(){
 
               <FormDescription>
                 This will be your password
+                Test password: test12345
               </FormDescription>
               <FormMessage/>
             </FormItem>
