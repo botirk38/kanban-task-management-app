@@ -91,7 +91,7 @@ export default function LoginPage() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField control={form.control} name="username" render={({ field }) => (
             <FormItem>
-              <div className="flex flex-col gap-4 justify-start items-center">
+              <div className="flex flex-col gap-4 justify-center items-start">
                 <FormLabel> Test Username: tester </FormLabel>
                 <FormLabel>Username</FormLabel>
               </div>
@@ -107,7 +107,7 @@ export default function LoginPage() {
           />
           <FormField control={form.control} name="password" render={({ field }) => (
             <FormItem>
-              <div className="flex flex-col gap-4 justify-start items-center">
+              <div className="flex flex-col gap-4 justify-center items-start">
                 <FormLabel>Test Password: test12345</FormLabel>
                 <FormLabel>Password</FormLabel>
               </div>
